@@ -1,0 +1,42 @@
+:root {
+  --background: #ffffff;
+  --foreground: #222031;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #222031;
+    --foreground: #ededed;
+    --success: #06D6A0;
+  }
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+.border-green {
+  border-color: var(--success) !important;
+}
+
+.text-green {
+  color: var(--success) !important;
+}
+
+.makeitscrollable_and_full_window_height {
+  height: 90%;
+  max-height: 100vh;
+  overflow-y: auto;
+  width: 100%
+}
+
+.mainContainer{
+  width: 100vw;
+}
