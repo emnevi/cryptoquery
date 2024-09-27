@@ -1,5 +1,5 @@
 'use client'; // Enable client-side rendering
-
+import ReactGA from 'react-ga';
 //addess bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh
 
 import { useEffect, useRef, useState } from 'react';
@@ -10,6 +10,7 @@ import './styles/custom-bootstrap.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBitcoin } from '@fortawesome/free-brands-svg-icons';
 import Search from './components/search';
+const TRACKING_ID = process.env.TRACKING_ID
 
 
 export default function Home() {
@@ -22,6 +23,11 @@ export default function Home() {
   const [totalProfits, setTotalProfits] = useState()
   const [transactions, setTransactions] = useState()
   const [allTransactionsDone, setAllTransactionsDone] = useState(false)
+
+  useEffect(() => {
+    ReactGA.initialize(TRACKING_ID);
+    ReactGA.pageview(window.location.pathname + window.location.search);
+  }, []);
 
   const fetchPrice = async () => {
     try {
