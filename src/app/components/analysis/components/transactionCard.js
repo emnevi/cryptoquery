@@ -34,12 +34,18 @@ const TransactionCard = ({ transaction, currentPrice, setResolvedProfits, resolv
 
             const profits = (Number(coinBalance) * Number(currentPrice)) - Number(txMomentValue)
 
-            setResolvedProfits([...resolvedProfits, profits])
+
             setTxCalculations({ ...txCalculations, txMomentValue, currentValue, profits, coinBalance })
         }
     }, [transaction, currentPrice, txPrice])
 
 
+    useEffect(() => {
+        if (txCalculations.profits) {
+            resolvedProfits.push(txCalculations.profits)
+            setResolvedProfits([...resolvedProfits])
+        }
+    }, [txCalculations])
 
     return (
         <div onClick={() => {
@@ -54,18 +60,19 @@ const TransactionCard = ({ transaction, currentPrice, setResolvedProfits, resolv
             style={{ borderRadius: 8 }}
         >
 
-            {isLoading && <span>Loading...</span>}
-
-            {!isLoading && !notification && <div className="d-flex justify-content-between align-items-center w-100 p-2">
-                <div className={`bg-transparent ${txCalculations.profits > 0 ? "border-success" : "border-danger"} fw-bold`}>
-                    {txCalculations?.profits && <span className="mb-0">${txCalculations.profits.toLocaleString()}</span>}
-                </div>
-                <div className="text-muted d-flex align-items-center">
-                    <div className="d-flex">
-                        {/*      {txCalculations?.txMomentValue && <small>@ tx ${txCalculations.txMomentValue.toLocaleString(undefined, { minimumFractionDigits: 1 })}</small>} */}
-                        <small className="me-2">{DateTime.fromSeconds(transaction.timestamp).toLocaleString(DateTime.DATETIME_SHORT)}</small>
+            {!notification && <div className="d-flex justify-content-between align-items-center w-100 p-2">
+                {!Number.isNaN(txCalculations.profits) &&<>
+                    <div className={`bg-transparent ${txCalculations.profits > 0 ? "border-success" : "border-danger"} fw-bold`}>
+                        {txCalculations?.profits && <span className="mb-0">${txCalculations.profits.toLocaleString()}</span>}
                     </div>
-                </div>
+                    <div className="text-muted d-flex align-items-center">
+                        <div className="d-flex">
+                            {/*      {txCalculations?.txMomentValue && <small>@ tx ${txCalculations.txMomentValue.toLocaleString(undefined, { minimumFractionDigits: 1 })}</small>} */}
+                            <small className="me-2">{DateTime.fromSeconds(transaction.timestamp).toLocaleString(DateTime.DATETIME_SHORT)}</small>
+                        </div>
+                    </div>
+                </>}
+                {Number.isNaN(txCalculations.profits)  && <span>Woops! We messed up this one</span>}
             </div>}
 
             {notification && <div class="d-flex w-100 border border-warning text-warning p-1" role="alert">

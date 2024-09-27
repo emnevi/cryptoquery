@@ -1,6 +1,6 @@
 const Search = ({ handleSubmit, setWallet, error, wallet }) => {
     return (
-        <div className="d-flex flex-column">
+        <div className="d-flex flex-column px-3">
             <h1 className="text-primary mb-1">Find out your hodling ROI!</h1>
             <small className="text-muted mb-3">We will query around and check how much you won for being a hodler!</small>
             <form onSubmit={handleSubmit} className="mb-4">

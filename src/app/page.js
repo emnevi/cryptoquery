@@ -99,8 +99,6 @@ export default function Home() {
           wallet={wallet}
         />}
 
-        {!transactions && loading && <Spinner />}
-
         {transactions && !loading && <>
 
           <div className='d-flex mb-3 mt-3 pt-3'>
