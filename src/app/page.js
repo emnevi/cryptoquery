@@ -1,5 +1,4 @@
 'use client'; // Enable client-side rendering
-import ReactGA from 'react-ga';
 //addess bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh
 
 import { useEffect, useRef, useState } from 'react';
@@ -10,8 +9,8 @@ import './styles/custom-bootstrap.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBitcoin } from '@fortawesome/free-brands-svg-icons';
 import Search from './components/search';
-const TRACKING_ID = process.env.TRACKING_ID
-
+import Script from 'next/script';
+const TRACKING_ID = process.env.NEXT_PUBLIC_TRACKING_ID
 
 export default function Home() {
   const [wallet, setWallet] = useState('');
@@ -24,10 +23,6 @@ export default function Home() {
   const [transactions, setTransactions] = useState()
   const [allTransactionsDone, setAllTransactionsDone] = useState(false)
 
-  useEffect(() => {
-    ReactGA.initialize(TRACKING_ID);
-    ReactGA.pageview(window.location.pathname + window.location.search);
-  }, []);
 
   const fetchPrice = async () => {
     try {
@@ -65,6 +60,18 @@ export default function Home() {
     }
   };
 
+  useEffect(() => {
+    if (TRACKING_ID) {
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        window.dataLayer.push(arguments);
+      }
+      gtag('js', new Date());
+      gtag('config', TRACKING_ID, {
+        page_path: window.location.pathname,
+      });
+    }
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -73,7 +80,7 @@ export default function Home() {
       setError('Invalid wallet address');
       return;
     }
-    
+
     try {
       setLoading(true)
       fetchWalletTransactions("BTC", wallet);
@@ -95,42 +102,56 @@ export default function Home() {
 
 
   return (
-    <div className="d-flex vh-100 bg-dark text-white justify-content-center align-items-center mainContainer" data-bs-theme="dark">
+    <>
+      <Script
+        src={`https://www.googletagmanager.com/gtag/js?id=${TRACKING_ID}`}
+        strategy="afterInteractive"
+      />
+      <Script id="google-analytics" strategy="afterInteractive">
+        {`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){window.dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', '${TRACKING_ID}', {
+            page_path: window.location.pathname,
+          });
+        `}
+      </Script>
+      <div className="d-flex vh-100 bg-dark text-white justify-content-center align-items-center mainContainer" data-bs-theme="dark">
+        <div className="d-flex flex-column align-items-center justify-content-center text-center h-100">
+          {!transactions && !loading && <Search
+            setWallet={setWallet}
+            handleSubmit={handleSubmit}
+            error={error}
+            wallet={wallet}
+          />}
 
-      <div className="d-flex flex-column align-items-center justify-content-center text-center h-100">
-        {!transactions && !loading && <Search
-          setWallet={setWallet}
-          handleSubmit={handleSubmit}
-          error={error}
-          wallet={wallet}
-        />}
+          {transactions && !loading && <>
 
-        {transactions && !loading && <>
-
-          <div className='d-flex mb-3 mt-3 pt-3'>
-            <div className='text-white me-2'>
-              <FontAwesomeIcon className='text-white' size='xl' icon={faBitcoin} />
+            <div className='d-flex mb-3 mt-3 pt-3'>
+              <div className='text-white me-2'>
+                <FontAwesomeIcon className='text-white' size='xl' icon={faBitcoin} />
+              </div>
+              {price && <h4>${price.toLocaleString() || "fetching price..."}</h4>}
+              <h4 className='ms-1'>Right now!</h4>
             </div>
-            {price && <h4>${price.toLocaleString() || "fetching price..."}</h4>}
-            <h4 className='ms-1'>Right now!</h4>
-          </div>
-          <div className='d-flex mb-2'>
+            <div className='d-flex mb-2'>
 
-            {totalProfits && <h1 className={`${totalProfits > 0 ? "text-success" : "text-danger"}`}>{totalProfits > 0 ? "+" : ""}{totalProfits.toLocaleString()} USD</h1>}
+              {totalProfits && <h1 className={`${totalProfits > 0 ? "text-success" : "text-danger"}`}>{totalProfits > 0 ? "+" : ""}{totalProfits.toLocaleString()} USD</h1>}
 
-          </div>
-          <div className="d-flex justify-content-between py-2 flex-column">
-            {transactions && transactions.length === 0 && <Spinner />}
-          </div>
-          {transactions && <span className='text-white mb-2 fw-bold text-muted'>Last {transactions.length} transactions</span>}
+            </div>
+            <div className="d-flex justify-content-between py-2 flex-column">
+              {transactions && transactions.length === 0 && <Spinner />}
+            </div>
+            {transactions && <span className='text-white mb-2 fw-bold text-muted'>Last {transactions.length} transactions</span>}
 
-          {transactions && <div className='makeitscrollable_and_full_window_height'>
-            {transactions.length > 0 && <Analysis setResolvedProfits={setResolvedProfits} transactions={transactions} resolvedProfits={resolvedProfits} currentPrice={price} walletInfo={walletInfo} />}
-            {transactions.length === 0 && <h5 className='text-danger'>No transactions found</h5>}
-          </div>}
+            {transactions && <div className='makeitscrollable_and_full_window_height'>
+              {transactions.length > 0 && <Analysis setResolvedProfits={setResolvedProfits} transactions={transactions} resolvedProfits={resolvedProfits} currentPrice={price} walletInfo={walletInfo} />}
+              {transactions.length === 0 && <h5 className='text-danger'>No transactions found</h5>}
+            </div>}
 
-        </>}
+          </>}
+        </div>
       </div>
-    </div>
-  );
+    </>);
 }
