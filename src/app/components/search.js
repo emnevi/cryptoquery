@@ -1,3 +1,6 @@
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faBitcoin } from "@fortawesome/free-brands-svg-icons"
+
 const Search = ({ handleSubmit, setWallet, error, wallet }) => {
     return (
         <div className="d-flex flex-column px-3">
@@ -16,6 +19,8 @@ const Search = ({ handleSubmit, setWallet, error, wallet }) => {
                     Go!
                 </button>
             </form>
+            <span className="mb-2">Supported addresses</span>
+            <FontAwesomeIcon size="xl" icon={faBitcoin}/>
         </div>
     )
 }
