@@ -5,9 +5,10 @@ import Analysis from './components/analysis/analysis';
 import Spinner from './components/useful/spinner';
 import './styles/custom-bootstrap.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBitcoin } from '@fortawesome/free-brands-svg-icons';
+import { faBitcoin, faEthereum } from '@fortawesome/free-brands-svg-icons';
 import Search from './components/search';
 import Info from './info';
+import AdaCoin from "./assets/cardano-ada-logo.svg"
 
 export default function Home() {
   const [wallet, setWallet] = useState('');
@@ -154,7 +155,11 @@ export default function Home() {
 
           <div className='d-flex mb-3 mt-3 pt-3'>
             <div className='text-white me-2'>
-              <FontAwesomeIcon className='text-white' size='xl' icon={faBitcoin} />
+              {crypto === "BTC" && <FontAwesomeIcon className='text-white' size='xl' icon={faBitcoin} />}
+              {crypto === "ETH" && <FontAwesomeIcon className='text-white' size='xl' icon={faEthereum} />}
+              {crypto === "BTC" &&    <div>
+                    <AdaCoin className="ada-logo mx-1" width={23.25} height={23.25}></AdaCoin>
+                </div>}
             </div>
             {price && <h4>${price.toLocaleString() || "fetching price..."}</h4>}
             <h4 className='ms-1'>Right now!</h4>
@@ -162,7 +167,7 @@ export default function Home() {
           <div className='d-flex mb-2'>
             {totalProfits && <h1 className={`${totalProfits > 0 ? "text-success" : "text-danger"}`}>{totalProfits > 0 ? "+" : ""}{totalProfits.toLocaleString()} USD</h1>}
           </div>
-          <p style={{ fontSize: 12 }} className='mb-0 text-muted'>We checked all the incoming transactions to this wallet and compared the price when they were done to the current crypto value</p>
+          <p style={{ fontSize: 12 }} className='mb-0 text-muted px-2'>We checked all the incoming transactions to this wallet and compared the price when they were done to the current crypto value</p>
           <div className="d-flex justify-content-between py-2 flex-column">
             {transactions && transactions.length === 0 && <Spinner />}
           </div>

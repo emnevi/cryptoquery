@@ -22,7 +22,7 @@ export async function GET(request) {
     if (crypto === "BTC") {
       chain = "bitcoin"
     } else {
-      chain = "binance-smart-chain"
+      chain = "ethereum"
     }
 
     const apiKey = process.env.CRYPTO_API_KEY;
