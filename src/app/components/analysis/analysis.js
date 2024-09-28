@@ -2,33 +2,57 @@ import { useEffect, useState } from "react"
 import TransactionCard from "./components/transactionCard"
 import { DateTime } from "luxon"
 
-const Analysis = ({ currentPrice, setResolvedProfits, resolvedProfits, transactions }) => {
+const Analysis = ({ currentPrice, setResolvedProfits, resolvedProfits, transactions, crypto }) => {
 
     const [txDates, setTxDates] = useState({ start: false, end: false })
     const [historicPrices, setHistoricPrices] = useState([])
 
-    const fetchHistoricalPrice = async (start, end) => {
-        const isoStart = DateTime.fromSeconds(start).toISODate()
-        const isoEnd = DateTime.fromSeconds(end).toISODate()
+    const fetchHistoricalPrice = async (fromDate, toDate, coin) => {
+        console.log("fromDate", DateTime.fromSeconds(fromDate).toISODate(), "toDate", DateTime.fromSeconds(toDate).toISODate())
 
-        const response = await fetch(`/api/historic-price2?startDate=${isoStart}&endDate=${isoEnd}`);
-        const data = await response.json();
-        setHistoricPrices(data.prices.map(historic => {
-            historic.x = DateTime.fromSeconds(historic.x).toISODate()
-            return historic
-        }))
+        try {
+            const fromTimestamp = DateTime.fromSeconds(fromDate).minus({ days: 2 }).toSeconds()
+            const toTimestamp = DateTime.fromSeconds(toDate).plus({ days: 2 }).toSeconds()
+
+            const response = await fetch(
+                `/api/historic-price?coin=${coin}&from=${fromTimestamp}&to=${toTimestamp}`
+            );
+
+            if (!response.ok) {
+                throw new Error(`Error: ${response.statusText}`);
+            }
+
+            const result = await response.json();
+            setHistoricPrices(result.data.map(candle => {
+                return { x: Number(candle[0]), y: Number(candle[2]) }
+            }));
+        } catch (e) {
+
+        }
     };
+
 
 
     useEffect(() => {
         if (transactions) {
 
-            const sortedTransactions = transactions.sort((a, b) => a.timestamp - b.timestamp)
+            if (crypto === "ADA") {
+                const sortedTransactions = transactions.sort((a, b) => a.block_time - b.block_time)
 
-            const firstTransactionTimeStamp = sortedTransactions[0]
-            const lastTrasnactionTimeStamp = sortedTransactions[sortedTransactions.length - 1]
+                const firstTransactionTimeStamp = sortedTransactions[0]
+                const lastTrasnactionTimeStamp = sortedTransactions[sortedTransactions.length - 1]
 
-            setTxDates({ ...txDates, start: firstTransactionTimeStamp.timestamp, end: lastTrasnactionTimeStamp.timestamp })
+                setTxDates({ ...txDates, start: firstTransactionTimeStamp.block_time, end: lastTrasnactionTimeStamp.block_time })
+            } else {
+                const sortedTransactions = transactions.sort((a, b) => a.timestamp - b.timestamp)
+
+                const firstTransactionTimeStamp = sortedTransactions[0]
+                const lastTrasnactionTimeStamp = sortedTransactions[sortedTransactions.length - 1]
+
+                setTxDates({ ...txDates, start: firstTransactionTimeStamp.timestamp, end: lastTrasnactionTimeStamp.timestamp })
+            }
+
+
 
         }
     }, [transactions])
@@ -36,13 +60,14 @@ const Analysis = ({ currentPrice, setResolvedProfits, resolvedProfits, transacti
 
     useEffect(() => {
         if (txDates.start && txDates.end) {
-            fetchHistoricalPrice(txDates.start, txDates.end)
+            fetchHistoricalPrice(txDates.start, txDates.end, crypto)
         }
     }, [txDates])
 
+    console.log("transactions", transactions)
     return (
         <div className="d-flex flex-column w-100" style={{ height: 500, maxHeight: 500 }}>
-            {transactions.toReversed().map(transaction => <TransactionCard historicPrices={historicPrices} setResolvedProfits={setResolvedProfits} resolvedProfits={resolvedProfits} currentPrice={currentPrice} key={transaction.transaction_hash} transaction={transaction} />)}
+            {transactions.toReversed().map((transaction, index) => <TransactionCard crypto={crypto} key={`index_${index}_${transaction.timestamp}`} historicPrices={historicPrices} setResolvedProfits={setResolvedProfits} resolvedProfits={resolvedProfits} currentPrice={currentPrice} transaction={transaction} />)}
         </div>
     )
 }

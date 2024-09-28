@@ -6,8 +6,9 @@ const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
 export async function GET(request) {
   const { searchParams } = new URL(request.url);
   const address = searchParams.get('address');
+  const crypto = searchParams.get('crypto');
   const limit = 50;
-  const offset = 0; 
+  const offset = 0;
 
 
   if (!address) {
@@ -15,8 +16,17 @@ export async function GET(request) {
   }
 
   try {
-    const apiKey = process.env.CRYPTO_API_KEY; 
-    const apiBaseUrl = `https://rest.cryptoapis.io/blockchain-data/bitcoin/mainnet/addresses/${address}/transactions`;
+
+    let chain
+
+    if (crypto === "BTC") {
+      chain = "bitcoin"
+    } else {
+      chain = "binance-smart-chain"
+    }
+
+    const apiKey = process.env.CRYPTO_API_KEY;
+    const apiBaseUrl = `https://rest.cryptoapis.io/blockchain-data/${chain}/mainnet/addresses/${address}/transactions`;
 
 
     const url = `${apiBaseUrl}?limit=${limit}&offset=${offset}`;
@@ -27,7 +37,7 @@ export async function GET(request) {
         'X-API-Key': apiKey,
       },
     });
-    
+
     const data = response.data;
 
     const latestTransactions = data.data.items || [];

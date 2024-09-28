@@ -1,6 +1,6 @@
 const Spinner = () => {
-    return <div class="spinner-border" role="status">
-    <span class="visually-hidden">Loading...</span>
+    return <div clasName="spinner-border" role="status">
+    <span clasName="visually-hidden">Loading...</span>
   </div>
 }
 

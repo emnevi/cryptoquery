@@ -1,35 +1,29 @@
-import axios from 'axios';
+import { NextResponse } from 'next/server';
 
-const APIPRICE_KEY = process.env.APIPRICE_KEY;
+const KUCOIN_API_URL = 'https://api.kucoin.com/api/v1/market/candles';
 
-export async function POST(req) {
-  const { start, end } = await req.json();
+// Fetch ADA or any coin historical data from KuCoin
+export async function GET(req) {
+  const { searchParams } = new URL(req.url);
 
-  if (!start || !end) {
-    return new Response(JSON.stringify({ error: 'Date is required' }), { status: 400 });
+  const coin = searchParams.get('coin')
+  const from = searchParams.get('from');
+  const to = searchParams.get('to');
+
+  if (!from || !to) {
+    return NextResponse.json({ error: 'Please provide "from" and "to" timestamps' }, { status: 400 });
   }
 
-  try {
-    const response = await axios.post(
-      'https://api.livecoinwatch.com/coins/single/history',
-      {
-        currency: 'USD',
-        code: 'BTC',      
-        start,
-        end,
-        meta: false
-      },
-      {
-        headers: {
-          'x-api-key': APIPRICE_KEY,
-          'Content-Type': 'application/json',
-        },
-      }
-    );
+  const url = `${KUCOIN_API_URL}?symbol=${coin.toUpperCase()}-USDT&type=1day&startAt=${from}&endAt=${to}`;
 
-    const data = response.data;
-    return new Response(JSON.stringify(data), { status: 200 }); // Return the historical price
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`Error fetching data: ${response.statusText}`);
+    }
+    const data = await response.json();
+    return NextResponse.json(data);
   } catch (error) {
-    return new Response(JSON.stringify({ error: 'Failed to fetch historical price' }), { status: 500 });
+    return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }

@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faReceipt } from "@fortawesome/free-solid-svg-icons"
 import { DateTime } from "luxon"
 
-const TransactionCard = ({ transaction, currentPrice, setResolvedProfits, resolvedProfits, historicPrices }) => {
+const TransactionCard = ({ transaction, currentPrice, setResolvedProfits, resolvedProfits, historicPrices, crypto }) => {
     const [txPrice, setTxPrice] = useState()
     const cardRef = useRef(null);
     const [txCalculations, setTxCalculations] = useState({})
@@ -15,15 +15,33 @@ const TransactionCard = ({ transaction, currentPrice, setResolvedProfits, resolv
     const { copyToClipboard, copied } = useCopyToClipboard();
 
     useEffect(() => {
-        const currentTransactionHitoricPrice = historicPrices.filter(history => history.x === DateTime.fromSeconds(transaction.timestamp).toISODate())[0]
-        if (currentTransactionHitoricPrice) {
-            setTxPrice(currentTransactionHitoricPrice.y)
+
+        if(crypto === "ADA"){
+            const currentTransactionHitoricPrice = historicPrices.filter(history => DateTime.fromSeconds(history.x).toISODate() === DateTime.fromSeconds(transaction.block_time).toISODate())[0]
+            if (currentTransactionHitoricPrice) {
+                setTxPrice(Number(currentTransactionHitoricPrice.y))
+            }
+        } else {
+            const currentTransactionHitoricPrice = historicPrices.filter(history => DateTime.fromSeconds(history.x).toISODate() === DateTime.fromSeconds(transaction.timestamp).toISODate())[0]
+            if (currentTransactionHitoricPrice) {
+                setTxPrice(Number(currentTransactionHitoricPrice.y))
+            }
         }
+    
     }), [historicPrices, transaction]
 
+    const getCoinBalance = (transaction, crypto) => {
+        if(crypto === "ADA"){
+            return Number(transaction.value)
+        } else {
+            return transaction.recipients.map(rec => Number(rec.amount)).reduce((value, acc) => acc + value, 0)
+        }
+    }
+
     useEffect(() => {
-        if (currentPrice) {
-            const coinBalance = transaction.blockchainSpecific.vin.map(vin => Number(vin.value)).reduce((value, acc) => acc + value, 0)
+        if (currentPrice && crypto) {
+
+            const coinBalance = getCoinBalance(transaction, crypto)
 
             const txMomentValue = Number(txPrice) * Number(coinBalance)
 
@@ -31,10 +49,14 @@ const TransactionCard = ({ transaction, currentPrice, setResolvedProfits, resolv
 
             const profits = (Number(coinBalance) * Number(currentPrice)) - Number(txMomentValue)
 
+            console.log("coin balance", coinBalance, "profits", profits, "txPrice", txPrice, "curentPrice", currentPrice)
 
+            if(Number.isNaN(txCalculations.profits)){
+                console.log("error", transaction, historicPrices)
+            }
             setTxCalculations({ ...txCalculations, txMomentValue, currentValue, profits, coinBalance })
         }
-    }, [transaction, currentPrice, txPrice])
+    }, [transaction, currentPrice, txPrice, crypto])
 
 
     useEffect(() => {
@@ -58,20 +80,21 @@ const TransactionCard = ({ transaction, currentPrice, setResolvedProfits, resolv
         >
 
             {!notification && <div className="d-flex justify-content-between align-items-center w-100 p-2">
-                {!Number.isNaN(txCalculations.profits) &&<>
+                {!Number.isNaN(txCalculations.profits) && <>
                     <div className={`bg-transparent ${txCalculations.profits > 0 ? "border-success" : "border-danger"} fw-bold`}>
                         {txCalculations?.profits && <span className="mb-0">${txCalculations.profits.toLocaleString()}</span>}
                     </div>
                     <div className="text-muted d-flex align-items-center">
                         <div className="d-flex">
-                            <small className="me-2">{DateTime.fromSeconds(transaction.timestamp).toLocaleString(DateTime.DATETIME_SHORT)}</small>
+                            {crypto !== "ADA" &&<small className="me-2">{DateTime.fromSeconds(transaction.timestamp).toLocaleString(DateTime.DATETIME_SHORT)}</small>}
+                            {crypto == "ADA" &&<small className="me-2">{DateTime.fromSeconds(transaction.block_time).toLocaleString(DateTime.DATETIME_SHORT)}</small>}
                         </div>
                     </div>
                 </>}
-                {Number.isNaN(txCalculations.profits)  && <span>Woops! We messed up this one</span>}
+                {Number.isNaN(txCalculations.profits) && <span>Woops! We messed up this one</span>}
             </div>}
 
-            {notification && <div class="d-flex w-100 border border-warning text-warning p-1" role="alert">
+            {notification && <div className="d-flex w-100 border border-warning text-warning p-1" role="alert">
                 Copied Tx hash to clipboard!
             </div>}
         </div>
