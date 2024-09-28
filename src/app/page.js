@@ -172,7 +172,6 @@ export default function Home() {
         </>}
      
       </div>
-      <Info/>
     </div>
   );
 }
