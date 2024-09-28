@@ -1,5 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faBitcoin } from "@fortawesome/free-brands-svg-icons"
+import { faBitcoin, faEthereum } from "@fortawesome/free-brands-svg-icons"
+import AdaIcon from "../assets/cardano-ada-logo.svg"
 
 const Search = ({ handleSubmit, setWallet, error, wallet }) => {
     return (
@@ -20,7 +21,13 @@ const Search = ({ handleSubmit, setWallet, error, wallet }) => {
                 </button>
             </form>
             <span className="mb-2">Supported addresses</span>
-            <FontAwesomeIcon size="xl" icon={faBitcoin}/>
+            <div className="d-flex justify-content-center align-items-center">
+                <FontAwesomeIcon className="mx-1" size="xl" icon={faBitcoin} />
+                <FontAwesomeIcon className="mx-1" size="xl" icon={faEthereum} />
+                <div>
+                    <AdaIcon className="ada-logo mx-1" width={23.25} height={23.25}></AdaIcon>
+                </div>
+            </div>
         </div>
     )
 }
