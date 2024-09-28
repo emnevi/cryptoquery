@@ -69,7 +69,7 @@ const TransactionCard = ({ transaction, currentPrice, setResolvedProfits, resolv
                 setNotification(false)
             }, 1000);
         }}
-            className={`w-100 d-flex align-items-center border ${txCalculations.profits > 0 ? "border-success text-success" : "border-danger text-danger"} mb-3 shadow mx-3`}
+            className={`w-100 d-flex align-items-center border ${txCalculations.profits > 0 ? "border-success text-success" : "border-danger text-danger"} mb-3 shadow `}
             ref={cardRef}
             style={{ borderRadius: 8 }}
         >
