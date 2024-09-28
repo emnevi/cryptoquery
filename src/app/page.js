@@ -157,7 +157,7 @@ export default function Home() {
             <div className='text-white me-2'>
               {crypto === "BTC" && <FontAwesomeIcon className='text-white' size='xl' icon={faBitcoin} />}
               {crypto === "ETH" && <FontAwesomeIcon className='text-white' size='xl' icon={faEthereum} />}
-              {crypto === "BTC" &&    <div>
+              {crypto === "ADA" &&    <div>
                     <AdaCoin className="ada-logo mx-1" width={23.25} height={23.25}></AdaCoin>
                 </div>}
             </div>
