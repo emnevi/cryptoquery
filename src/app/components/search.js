@@ -1,8 +1,9 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faBitcoin, faEthereum } from "@fortawesome/free-brands-svg-icons"
 import AdaIcon from "../assets/cardano-ada-logo.svg"
+import Spinner from "./useful/spinner"
 
-const Search = ({ handleSubmit, setWallet, error, wallet }) => {
+const Search = ({ handleSubmit, setWallet, error, wallet, loading }) => {
     return (
         <div className="d-flex flex-column px-3">
             <h1 className="text-primary mb-1">Find out your hodling ROI!</h1>
@@ -16,8 +17,9 @@ const Search = ({ handleSubmit, setWallet, error, wallet }) => {
                     className="form-control p-2 mb-3"
                 />
                 {error && <p className="text-danger">{error}</p>}
-                <button type="submit" className="btn btn-primary w-100">
-                    Go!
+                <button style={{height: 38, maxHeight: 38, minHeight: 38}} type="submit" className="btn btn-primary w-100 d-flex align-items-center justify-content-center" disabled={loading}>
+                    {!loading && "Go!"}
+                    {loading && <Spinner height={25} color="text-white"/>}
                 </button>
             </form>
             <span className="mb-2">Supported addresses</span>

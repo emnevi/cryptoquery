@@ -1,6 +1,6 @@
-const Spinner = () => {
-    return <div clasName="spinner-border" role="status">
-    <span clasName="visually-hidden">Loading...</span>
+const Spinner = ({height, color}) => {
+    return <div style={{height, width: height}} className={`spinner-border ${color || "text-dark"}`} role="status">
+    <span className="visually-hidden">Fetching...</span>
   </div>
 }
 

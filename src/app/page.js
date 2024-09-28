@@ -7,8 +7,6 @@ import './styles/custom-bootstrap.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBitcoin } from '@fortawesome/free-brands-svg-icons';
 import Search from './components/search';
-import Info from './info';
-
 
 export default function Home() {
   const [wallet, setWallet] = useState('');
@@ -19,7 +17,6 @@ export default function Home() {
   const [resolvedProfits, setResolvedProfits] = useState([])
   const [totalProfits, setTotalProfits] = useState()
   const [transactions, setTransactions] = useState()
-  const [allTransactionsDone, setAllTransactionsDone] = useState(false)
   const [crypto, setCrypto] = useState()
 
   const fetchPrice = async (crypto) => {
@@ -52,21 +49,24 @@ export default function Home() {
 
 
   const isADA = (address) => {
-    const regex = /^(addr1[a-zA-Z0-9]{98,105}|Ae2[a-zA-Z0-9]{50,}|DdzFF[a-zA-Z0-9]{100,})$/;
+    const regex = /^(addr1[0-9a-z]+)$/;
     return regex.test(address);
   };
 
   const validateAddress = (address) => {
     if(isBTC(address)){
+
       setCrypto("BTC")
       return true
     } else if (isETH(address)){
       setCrypto("ETH")
       return true
     } else if (isADA(address)){
+      console.log("is ada")
       setCrypto("ADA")
       return true
     } else {
+      console.log("is nothing")
       return false
     }
   }
@@ -84,9 +84,10 @@ export default function Home() {
   }
 
   const fetchWalletTransactions = async (address) => {
+    setLoading(true)
     try {
       let crypto = getCryptoFromAddress(address)
-
+      console.log("crypto is", crypto)
       if(crypto === "ADA"){
         const response = await fetch(`/api/getAdaWalletTransactions?address=${address}`);
         const data = await response.json();
@@ -102,6 +103,8 @@ export default function Home() {
 
     } catch (error) {
       console.error('Error fetching transactions:', error);
+    } finally{
+      setLoading(false)
     }
   };
 
@@ -115,13 +118,11 @@ export default function Home() {
     }
     
     try {
-      setLoading(true)
       fetchWalletTransactions(wallet);
 
     } catch (error) {
       console.error('Error fetching wallet info:', error);
     } finally {
-      setLoading(false)
     }
   };
 
@@ -134,15 +135,18 @@ export default function Home() {
   }, [resolvedProfits])
 
 
+  console.log("loading", loading)
+
   return (
     <div className="d-flex vh-100 bg-dark text-white justify-content-center align-items-center mainContainer" data-bs-theme="dark">
 
       <div className="d-flex flex-column align-items-center justify-content-center text-center h-100">
-        {!transactions && !loading && <Search
+        {!transactions && <Search
           setWallet={setWallet}
           handleSubmit={e => handleSubmit(e, crypto)}
           error={error}
           wallet={wallet}
+          loading={loading}
         />}
 
         {transactions && !loading && <>
