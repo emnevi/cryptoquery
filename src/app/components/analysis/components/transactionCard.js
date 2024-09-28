@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faReceipt } from "@fortawesome/free-solid-svg-icons"
 import { DateTime } from "luxon"
 
-const TransactionCard = ({ transaction, currentPrice, setResolvedProfits, resolvedProfits, historicPrices, crypto }) => {
+const TransactionCard = ({ transaction, currentPrice, setResolvedProfits, resolvedProfits, historicPrices, crypto, languageDetected }) => {
     const [txPrice, setTxPrice] = useState()
     const cardRef = useRef(null);
     const [txCalculations, setTxCalculations] = useState({})
@@ -69,7 +69,7 @@ const TransactionCard = ({ transaction, currentPrice, setResolvedProfits, resolv
                 setNotification(false)
             }, 1000);
         }}
-            className={`w-100 d-flex align-items-center border ${txCalculations.profits > 0 ? "border-success text-success" : "border-danger text-danger"} mb-3 shadow`}
+            className={`w-100 d-flex align-items-center border ${txCalculations.profits > 0 ? "border-success text-success" : "border-danger text-danger"} mb-3 shadow mx-3`}
             ref={cardRef}
             style={{ borderRadius: 8 }}
         >

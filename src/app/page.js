@@ -9,6 +9,7 @@ import { faBitcoin, faEthereum } from '@fortawesome/free-brands-svg-icons';
 import Search from './components/search';
 import Info from './info';
 import AdaCoin from "./assets/cardano-ada-logo.svg"
+import UIMessages from './assets/uimessages';
 
 export default function Home() {
   const [wallet, setWallet] = useState('');
@@ -20,6 +21,7 @@ export default function Home() {
   const [totalProfits, setTotalProfits] = useState()
   const [transactions, setTransactions] = useState()
   const [crypto, setCrypto] = useState()
+  const [languageDetected, setLanguageDetected] = useState('');
 
   const fetchPrice = async (crypto) => {
     try {
@@ -64,11 +66,9 @@ export default function Home() {
       setCrypto("ETH")
       return true
     } else if (isADA(address)) {
-      console.log("is ada")
       setCrypto("ADA")
       return true
     } else {
-      console.log("is nothing")
       return false
     }
   }
@@ -89,7 +89,6 @@ export default function Home() {
     setLoading(true)
     try {
       let crypto = getCryptoFromAddress(address)
-      console.log("crypto is", crypto)
       if (crypto === "ADA") {
         const response = await fetch(`/api/getAdaWalletTransactions?address=${address}`);
         const data = await response.json();
@@ -129,6 +128,21 @@ export default function Home() {
   };
 
   useEffect(() => {
+
+    if (typeof window !== 'undefined') {
+      const language = navigator.language || navigator.userLanguage;
+
+      if (language.startsWith('en')) {
+        setLanguageDetected('English');
+      } else if (language.startsWith('es')) {
+        setLanguageDetected('Spanish');
+      } else {
+        setLanguageDetected('English');
+      }
+    }
+  }, []);
+
+  useEffect(() => {
     if (!resolvedProfits || resolvedProfits.length === 0) return
 
     const totalProfits = resolvedProfits.filter(value => value && !Number.isNaN(value)).reduce((a, b) => a + b, 0)
@@ -136,8 +150,7 @@ export default function Home() {
     setTotalProfits(totalProfits)
   }, [resolvedProfits])
 
-
-  console.log("loading", loading)
+  if(!languageDetected) return
 
   return (
     <div className="d-flex vh-100 bg-dark text-white justify-content-center align-items-center mainContainer" data-bs-theme="dark">
@@ -149,6 +162,7 @@ export default function Home() {
           error={error}
           wallet={wallet}
           loading={loading}
+          languageDetected={languageDetected}
         />}
 
         {transactions && !loading && <>
@@ -157,26 +171,26 @@ export default function Home() {
             <div className='text-white me-2'>
               {crypto === "BTC" && <FontAwesomeIcon className='text-white' size='xl' icon={faBitcoin} />}
               {crypto === "ETH" && <FontAwesomeIcon className='text-white' size='xl' icon={faEthereum} />}
-              {crypto === "ADA" &&    <div>
-                    <AdaCoin className="ada-logo mx-1" width={23.25} height={23.25}></AdaCoin>
-                </div>}
+              {crypto === "ADA" && <div>
+                <AdaCoin className="ada-logo mx-1" width={23.25} height={23.25}></AdaCoin>
+              </div>}
             </div>
-            {price && <h4>${price.toLocaleString() || "fetching price..."}</h4>}
-            <h4 className='ms-1'>Right now!</h4>
+            {price && <h4>${price.toLocaleString() || "fetching price..."}</h4>}  
+            <h4 className='ms-1'>{UIMessages[languageDetected].rightNow}</h4>
           </div>
           <div className='d-flex mb-2'>
             {totalProfits && <h1 className={`${totalProfits > 0 ? "text-success" : "text-danger"}`}>{totalProfits > 0 ? "+" : ""}{totalProfits.toLocaleString()} USD</h1>}
           </div>
-          <p style={{ fontSize: 12 }} className='mb-0 text-muted px-2'>We checked all the incoming transactions to this wallet and compared the price when they were done to the current crypto value</p>
+          <p style={{ fontSize: 12 }} className='mb-0 text-muted px-2'>{UIMessages[languageDetected].explanation}</p>
           <div className="d-flex justify-content-between py-2 flex-column">
             {transactions && transactions.length === 0 && <Spinner />}
           </div>
-          {transactions && <span className='text-white mb-2 fw-bold text-white'>Gains per Tx </span>}
-          {transactions && <small style={{ fontSize: 11 }} className='text-muted fw-normal mb-2'> (Last {transactions.length} transactions received)</small>}
+          {transactions && <span className='text-white mb-2 fw-bold text-white'>{UIMessages[languageDetected].gainsPerTx}</span>}
+          {transactions && <small style={{ fontSize: 11 }} className='text-muted fw-normal mb-2'> ({UIMessages[languageDetected].last} {transactions.length} {UIMessages[languageDetected].lasEnd})</small>}
 
           {transactions && <div className='makeitscrollable_and_full_window_height mt-2'>
-            {transactions.length > 0 && <Analysis wallet={wallet} crypto={crypto} setResolvedProfits={setResolvedProfits} transactions={transactions} resolvedProfits={resolvedProfits} currentPrice={price} walletInfo={walletInfo} />}
-            {transactions.length === 0 && <h5 className='text-danger'>No transactions found</h5>}
+            {transactions.length > 0 && <Analysis languageDetected={languageDetected} wallet={wallet} crypto={crypto} setResolvedProfits={setResolvedProfits} transactions={transactions} resolvedProfits={resolvedProfits} currentPrice={price} walletInfo={walletInfo} />}
+            {transactions.length === 0 && <h5 className='text-danger'>{UIMessages[languageDetected].noTxFound}</h5>}
           </div>}
 
         </>}

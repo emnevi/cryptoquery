@@ -2,14 +2,12 @@ import { useEffect, useState } from "react"
 import TransactionCard from "./components/transactionCard"
 import { DateTime } from "luxon"
 
-const Analysis = ({ currentPrice, setResolvedProfits, resolvedProfits, transactions, crypto, wallet }) => {
+const Analysis = ({ currentPrice, setResolvedProfits, resolvedProfits, transactions, crypto, wallet, languageDetected }) => {
 
     const [txDates, setTxDates] = useState({ start: false, end: false })
     const [historicPrices, setHistoricPrices] = useState([])
 
     const fetchHistoricalPrice = async (fromDate, toDate, coin) => {
-        console.log("fromDate", DateTime.fromSeconds(fromDate).toISODate(), "toDate", DateTime.fromSeconds(toDate).toISODate())
-
         try {
             const fromTimestamp = DateTime.fromSeconds(fromDate).minus({ days: 2 }).toSeconds()
             const toTimestamp = DateTime.fromSeconds(toDate).plus({ days: 2 }).toSeconds()
@@ -64,12 +62,11 @@ const Analysis = ({ currentPrice, setResolvedProfits, resolvedProfits, transacti
         }
     }, [txDates])
 
-    console.log("transactions", transactions)
     return (
         <div className="d-flex flex-column w-100" style={{ height: 500, maxHeight: 500 }}>
             {transactions.filter((transaction) =>
                 !transaction.senders.some(sender => sender.address === wallet)
-            ).toReversed().map((transaction, index) => <TransactionCard crypto={crypto} key={`index_${index}_${transaction.timestamp}`} historicPrices={historicPrices} setResolvedProfits={setResolvedProfits} resolvedProfits={resolvedProfits} currentPrice={currentPrice} transaction={transaction} />)}
+            ).toReversed().map((transaction, index) => <TransactionCard languageDetected={languageDetected} crypto={crypto} key={`index_${index}_${transaction.timestamp}`} historicPrices={historicPrices} setResolvedProfits={setResolvedProfits} resolvedProfits={resolvedProfits} currentPrice={currentPrice} transaction={transaction} />)}
         </div>
     )
 }

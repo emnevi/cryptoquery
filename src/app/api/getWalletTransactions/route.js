@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server';
 import axios from 'axios';
 
-const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
 
 export async function GET(request) {
   const { searchParams } = new URL(request.url);
