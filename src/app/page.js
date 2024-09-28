@@ -10,6 +10,7 @@ import Search from './components/search';
 import Info from './info';
 import AdaCoin from "./assets/cardano-ada-logo.svg"
 import UIMessages from './assets/uimessages';
+import GoogleAnalytics from './analytics';
 
 export default function Home() {
   const [wallet, setWallet] = useState('');
@@ -150,53 +151,55 @@ export default function Home() {
     setTotalProfits(totalProfits)
   }, [resolvedProfits])
 
-  if(!languageDetected) return
+  if (!languageDetected) return
 
   return (
-    <div className="d-flex vh-100 bg-dark text-white justify-content-center align-items-center mainContainer" data-bs-theme="dark">
+    <>
+      <GoogleAnalytics />
+      <div className="d-flex vh-100 bg-dark text-white justify-content-center align-items-center mainContainer" data-bs-theme="dark">
 
-      <div className="d-flex flex-column align-items-center justify-content-center text-center h-100">
-        {!transactions && <Search
-          setWallet={setWallet}
-          handleSubmit={e => handleSubmit(e, crypto)}
-          error={error}
-          wallet={wallet}
-          loading={loading}
-          languageDetected={languageDetected}
-        />}
+        <div className="d-flex flex-column align-items-center justify-content-center text-center h-100">
+          {!transactions && <Search
+            setWallet={setWallet}
+            handleSubmit={e => handleSubmit(e, crypto)}
+            error={error}
+            wallet={wallet}
+            loading={loading}
+            languageDetected={languageDetected}
+          />}
 
-        {transactions && !loading && <>
+          {transactions && !loading && <>
 
-          <div className='d-flex mb-3 mt-3 pt-3'>
-            <div className='text-white me-2'>
-              {crypto === "BTC" && <FontAwesomeIcon className='text-white' size='xl' icon={faBitcoin} />}
-              {crypto === "ETH" && <FontAwesomeIcon className='text-white' size='xl' icon={faEthereum} />}
-              {crypto === "ADA" && <div>
-                <AdaCoin className="ada-logo mx-1" width={23.25} height={23.25}></AdaCoin>
-              </div>}
+            <div className='d-flex mb-3 mt-3 pt-3'>
+              <div className='text-white me-2'>
+                {crypto === "BTC" && <FontAwesomeIcon className='text-white' size='xl' icon={faBitcoin} />}
+                {crypto === "ETH" && <FontAwesomeIcon className='text-white' size='xl' icon={faEthereum} />}
+                {crypto === "ADA" && <div>
+                  <AdaCoin className="ada-logo mx-1" width={23.25} height={23.25}></AdaCoin>
+                </div>}
+              </div>
+              {price && <h4>${price.toLocaleString() || "fetching price..."}</h4>}
+              <h4 className='ms-1'>{UIMessages[languageDetected].rightNow}</h4>
             </div>
-            {price && <h4>${price.toLocaleString() || "fetching price..."}</h4>}  
-            <h4 className='ms-1'>{UIMessages[languageDetected].rightNow}</h4>
-          </div>
-          <div className='d-flex mb-2'>
-            {totalProfits && <h1 className={`${totalProfits > 0 ? "text-success" : "text-danger"}`}>{totalProfits > 0 ? "+" : ""}{totalProfits.toLocaleString()} USD</h1>}
-          </div>
-          <p style={{ fontSize: 12 }} className='mb-0 text-muted px-2'>{UIMessages[languageDetected].explanation}</p>
-          <div className="d-flex justify-content-between py-2 flex-column">
-            {transactions && transactions.length === 0 && <Spinner />}
-          </div>
-          {transactions && <span className='text-white mb-2 fw-bold text-white'>{UIMessages[languageDetected].gainsPerTx}</span>}
-          {transactions && <small style={{ fontSize: 11 }} className='text-muted fw-normal mb-2'> ({UIMessages[languageDetected].last} {transactions.length} {UIMessages[languageDetected].lasEnd})</small>}
+            <div className='d-flex mb-2'>
+              {totalProfits && <h1 className={`${totalProfits > 0 ? "text-success" : "text-danger"}`}>{totalProfits > 0 ? "+" : ""}{totalProfits.toLocaleString()} USD</h1>}
+            </div>
+            <p style={{ fontSize: 12 }} className='mb-0 text-muted px-2'>{UIMessages[languageDetected].explanation}</p>
+            <div className="d-flex justify-content-between py-2 flex-column">
+              {transactions && transactions.length === 0 && <Spinner />}
+            </div>
+            {transactions && <span className='text-white mb-2 fw-bold text-white'>{UIMessages[languageDetected].gainsPerTx}</span>}
+            {transactions && <small style={{ fontSize: 11 }} className='text-muted fw-normal mb-2'> ({UIMessages[languageDetected].last} {transactions.length} {UIMessages[languageDetected].lasEnd})</small>}
 
-          {transactions && <div className='makeitscrollable_and_full_window_height mt-2'>
-            {transactions.length > 0 && <Analysis languageDetected={languageDetected} wallet={wallet} crypto={crypto} setResolvedProfits={setResolvedProfits} transactions={transactions} resolvedProfits={resolvedProfits} currentPrice={price} walletInfo={walletInfo} />}
-            {transactions.length === 0 && <h5 className='text-danger'>{UIMessages[languageDetected].noTxFound}</h5>}
-          </div>}
+            {transactions && <div className='makeitscrollable_and_full_window_height mt-2'>
+              {transactions.length > 0 && <Analysis languageDetected={languageDetected} wallet={wallet} crypto={crypto} setResolvedProfits={setResolvedProfits} transactions={transactions} resolvedProfits={resolvedProfits} currentPrice={price} walletInfo={walletInfo} />}
+              {transactions.length === 0 && <h5 className='text-danger'>{UIMessages[languageDetected].noTxFound}</h5>}
+            </div>}
 
-        </>}
+          </>}
 
-      </div>
-      <Info></Info>
-    </div>
+        </div>
+        <Info></Info>
+      </div></>
   );
 }
