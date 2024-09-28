@@ -43,7 +43,8 @@ body {
 
 .infoBar{
   position: absolute;
-  bottom: 10px;
+  bottom: 5px;
+  right: 5px
 
 }
 
