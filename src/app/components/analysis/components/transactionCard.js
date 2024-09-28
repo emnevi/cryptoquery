@@ -49,11 +49,6 @@ const TransactionCard = ({ transaction, currentPrice, setResolvedProfits, resolv
 
             const profits = (Number(coinBalance) * Number(currentPrice)) - Number(txMomentValue)
 
-            console.log("coin balance", coinBalance, "profits", profits, "txPrice", txPrice, "curentPrice", currentPrice)
-
-            if(Number.isNaN(txCalculations.profits)){
-                console.log("error", transaction, historicPrices)
-            }
             setTxCalculations({ ...txCalculations, txMomentValue, currentValue, profits, coinBalance })
         }
     }, [transaction, currentPrice, txPrice, crypto])

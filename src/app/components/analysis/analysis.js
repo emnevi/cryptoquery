@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import TransactionCard from "./components/transactionCard"
 import { DateTime } from "luxon"
 
-const Analysis = ({ currentPrice, setResolvedProfits, resolvedProfits, transactions, crypto }) => {
+const Analysis = ({ currentPrice, setResolvedProfits, resolvedProfits, transactions, crypto, wallet }) => {
 
     const [txDates, setTxDates] = useState({ start: false, end: false })
     const [historicPrices, setHistoricPrices] = useState([])
@@ -67,7 +67,9 @@ const Analysis = ({ currentPrice, setResolvedProfits, resolvedProfits, transacti
     console.log("transactions", transactions)
     return (
         <div className="d-flex flex-column w-100" style={{ height: 500, maxHeight: 500 }}>
-            {transactions.toReversed().map((transaction, index) => <TransactionCard crypto={crypto} key={`index_${index}_${transaction.timestamp}`} historicPrices={historicPrices} setResolvedProfits={setResolvedProfits} resolvedProfits={resolvedProfits} currentPrice={currentPrice} transaction={transaction} />)}
+            {transactions.filter((transaction) =>
+                !transaction.senders.some(sender => sender.address === wallet)
+            ).toReversed().map((transaction, index) => <TransactionCard crypto={crypto} key={`index_${index}_${transaction.timestamp}`} historicPrices={historicPrices} setResolvedProfits={setResolvedProfits} resolvedProfits={resolvedProfits} currentPrice={currentPrice} transaction={transaction} />)}
         </div>
     )
 }

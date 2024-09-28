@@ -1,4 +1,4 @@
-'use client'; 
+'use client';
 
 import { useEffect, useRef, useState } from 'react';
 import Analysis from './components/analysis/analysis';
@@ -26,7 +26,7 @@ export default function Home() {
       const data = await res.json();
 
       if (res.ok) {
-        setPrice(data.price); 
+        setPrice(data.price);
         setError(data.error || 'Failed to fetch the price');
       }
     } catch (err) {
@@ -42,7 +42,7 @@ export default function Home() {
     const regex = /^(1[a-km-zA-HJ-NP-Z1-9]{25,34}|3[a-km-zA-HJ-NP-Z1-9]{25,34}|bc1[a-zA-HJ-NP-Z0-9]{39,59})$/;
     return regex.test(address);
   };
-  
+
   const isETH = (address) => {
     const regex = /^(0x[a-fA-F0-9]{40})$/;
     return regex.test(address);
@@ -55,14 +55,14 @@ export default function Home() {
   };
 
   const validateAddress = (address) => {
-    if(isBTC(address)){
+    if (isBTC(address)) {
 
       setCrypto("BTC")
       return true
-    } else if (isETH(address)){
+    } else if (isETH(address)) {
       setCrypto("ETH")
       return true
-    } else if (isADA(address)){
+    } else if (isADA(address)) {
       console.log("is ada")
       setCrypto("ADA")
       return true
@@ -73,11 +73,11 @@ export default function Home() {
   }
 
   const getCryptoFromAddress = (address) => {
-    if(isBTC(address)){
+    if (isBTC(address)) {
       return "BTC"
-    } else if (isETH(address)){
+    } else if (isETH(address)) {
       return "ETH"
-    } else if (isADA(address)){
+    } else if (isADA(address)) {
       return "ADA"
     } else {
       return false
@@ -89,7 +89,7 @@ export default function Home() {
     try {
       let crypto = getCryptoFromAddress(address)
       console.log("crypto is", crypto)
-      if(crypto === "ADA"){
+      if (crypto === "ADA") {
         const response = await fetch(`/api/getAdaWalletTransactions?address=${address}`);
         const data = await response.json();
         setWalletInfo(data)
@@ -100,11 +100,11 @@ export default function Home() {
         setWalletInfo(data)
         setTransactions(data)
       }
-     
+
 
     } catch (error) {
       console.error('Error fetching transactions:', error);
-    } finally{
+    } finally {
       setLoading(false)
     }
   };
@@ -117,7 +117,7 @@ export default function Home() {
       setError('Invalid wallet address');
       return;
     }
-    
+
     try {
       fetchWalletTransactions(wallet);
 
@@ -160,22 +160,22 @@ export default function Home() {
             <h4 className='ms-1'>Right now!</h4>
           </div>
           <div className='d-flex mb-2'>
-
             {totalProfits && <h1 className={`${totalProfits > 0 ? "text-success" : "text-danger"}`}>{totalProfits > 0 ? "+" : ""}{totalProfits.toLocaleString()} USD</h1>}
-
           </div>
+          <p style={{ fontSize: 12 }} className='mb-0 text-muted'>We checked all the incoming transactions to this wallet and compared the price when they were done to the current crypto value</p>
           <div className="d-flex justify-content-between py-2 flex-column">
             {transactions && transactions.length === 0 && <Spinner />}
           </div>
-          {transactions && <span className='text-white mb-2 fw-bold text-muted'>Last {transactions.length} transactions</span>}
+          {transactions && <span className='text-white mb-2 fw-bold text-white'>Gains per Tx </span>}
+          {transactions && <small style={{ fontSize: 11 }} className='text-muted fw-normal mb-2'> (Last {transactions.length} transactions received)</small>}
 
-          {transactions && <div className='makeitscrollable_and_full_window_height'>
-            {transactions.length > 0 && <Analysis crypto={crypto} setResolvedProfits={setResolvedProfits} transactions={transactions} resolvedProfits={resolvedProfits} currentPrice={price} walletInfo={walletInfo} />}
+          {transactions && <div className='makeitscrollable_and_full_window_height mt-2'>
+            {transactions.length > 0 && <Analysis wallet={wallet} crypto={crypto} setResolvedProfits={setResolvedProfits} transactions={transactions} resolvedProfits={resolvedProfits} currentPrice={price} walletInfo={walletInfo} />}
             {transactions.length === 0 && <h5 className='text-danger'>No transactions found</h5>}
           </div>}
 
         </>}
-     
+
       </div>
       <Info></Info>
     </div>
