@@ -7,6 +7,7 @@ import './styles/custom-bootstrap.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBitcoin } from '@fortawesome/free-brands-svg-icons';
 import Search from './components/search';
+import Info from './info';
 
 
 export default function Home() {
@@ -120,7 +121,9 @@ export default function Home() {
           </div>}
 
         </>}
+     
       </div>
+      <Info/>
     </div>
   );
 }

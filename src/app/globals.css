@@ -40,3 +40,9 @@ body {
 .mainContainer{
   width: 100vw;
 }
+
+.infoBar{
+  position: absolute;
+  bottom: 10px;
+
+}
