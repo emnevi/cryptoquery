@@ -2,7 +2,7 @@ const UIMessages = {
     Spanish: {
         title: "Consulta cuánto ha crecido tu cripto",
         subtitle: "Simplemente ingresa la dirección de tu billetera y obtendremos tus ganancias.",
-        inputPlaceholer: "Ingresa tu billetera crypto",
+        inputPlaceholer: "Ingresa tu billetera cripto",
         addresses: "Billeteras soportadas",
         actionButton: "Vamos!",
         explanation: "Hemos analizado todas las transacciones entrantes a tu billetera y hemos comparado el valor en el momento de cada transacción con el precio actual de mercado.",
