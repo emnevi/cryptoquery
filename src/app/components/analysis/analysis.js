@@ -1,14 +1,8 @@
 import { useEffect, useState } from "react"
 import TransactionCard from "./components/transactionCard"
 import { DateTime } from "luxon"
-const TX_LIMIT = 2
 
-const Analysis = ({ walletInfo, currentPrice, setResolvedProfits, resolvedProfits, transactions }) => {
-
-    const [pagination, setPagination] = useState({
-        start: 0,
-        end: TX_LIMIT - 1
-    })
+const Analysis = ({ currentPrice, setResolvedProfits, resolvedProfits, transactions }) => {
 
     const [txDates, setTxDates] = useState({ start: false, end: false })
     const [historicPrices, setHistoricPrices] = useState([])

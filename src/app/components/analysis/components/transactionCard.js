@@ -8,9 +8,6 @@ import { DateTime } from "luxon"
 
 const TransactionCard = ({ transaction, currentPrice, setResolvedProfits, resolvedProfits, historicPrices }) => {
     const [txPrice, setTxPrice] = useState()
-    const [error, setError] = useState()
-    const [isLoading, setIsloading] = useState(false)
-    const [isVisible, setIsVisible] = useState(false)
     const cardRef = useRef(null);
     const [txCalculations, setTxCalculations] = useState({})
     const [notification, setNotification] = useState(false)
@@ -67,7 +64,6 @@ const TransactionCard = ({ transaction, currentPrice, setResolvedProfits, resolv
                     </div>
                     <div className="text-muted d-flex align-items-center">
                         <div className="d-flex">
-                            {/*      {txCalculations?.txMomentValue && <small>@ tx ${txCalculations.txMomentValue.toLocaleString(undefined, { minimumFractionDigits: 1 })}</small>} */}
                             <small className="me-2">{DateTime.fromSeconds(transaction.timestamp).toLocaleString(DateTime.DATETIME_SHORT)}</small>
                         </div>
                     </div>

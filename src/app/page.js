@@ -1,9 +1,6 @@
-'use client'; // Enable client-side rendering
-
-//addess bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh
+'use client'; 
 
 import { useEffect, useRef, useState } from 'react';
-import testData from "../../data/walletSample.json"
 import Analysis from './components/analysis/analysis';
 import Spinner from './components/useful/spinner';
 import './styles/custom-bootstrap.scss'
@@ -29,8 +26,7 @@ export default function Home() {
       const data = await res.json();
 
       if (res.ok) {
-        setPrice(data.price); // Update the price in the state
-      } else {
+        setPrice(data.price); 
         setError(data.error || 'Failed to fetch the price');
       }
     } catch (err) {
