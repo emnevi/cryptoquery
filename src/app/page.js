@@ -12,6 +12,7 @@ import AdaCoin from "./assets/cardano-ada-logo.svg"
 import UIMessages from './assets/uimessages';
 import GoogleAnalytics from './analytics';
 import ExplanationSection from './components/web/explanationSection';
+import Navbar from './navbar';
 
 export default function Home() {
   const [wallet, setWallet] = useState('');
@@ -157,6 +158,7 @@ export default function Home() {
   return (
     <div className='d-flex flex-column w-100'>
       <GoogleAnalytics />
+      <Navbar/>
       <div className="d-flex bg-dark text-white justify-content-center align-items-center mainContainer w-100" data-bs-theme="dark">
         <div className="d-flex flex-column align-items-center justify-content-center text-center h-100">
           {!transactions && <Search
