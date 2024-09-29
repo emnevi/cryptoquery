@@ -13,7 +13,8 @@
   }
 }
 
-html, body {
+html,
+body {
   height: 100%;
   margin: 0;
   padding: 0;
@@ -30,25 +31,24 @@ body {
   height: 90%;
   max-height: 100vh;
   overflow-y: auto;
-  width: 100%
+  width: 100vw
 }
 
-.mainContainer{
+.mainContainer {
   width: 100vw;
-  height: 100vh;
+  height: 95vh;
 }
 
-.infoBar{
+.infoBar {
   position: fixed;
   bottom: 5px;
   right: 5px
-
 }
 
-.ada-logo{
+.ada-logo {
   color: white !important;
 }
 
-.explanationCard{
+.explanationCard {
   height: 25vh;
 }

@@ -63,7 +63,7 @@ const Analysis = ({ currentPrice, setResolvedProfits, resolvedProfits, transacti
     }, [txDates])
 
     return (
-        <div className="d-flex flex-column w-100" style={{ height: 500, maxHeight: 500 }}>
+        <div className="d-flex flex-column align-items-center" style={{ height: 500, maxHeight: 500}}>
             {transactions.filter((transaction) =>
                 !transaction.senders.some(sender => sender.address === wallet)
             ).toReversed().map((transaction, index) => <TransactionCard languageDetected={languageDetected} crypto={crypto} key={`index_${index}_${transaction.timestamp}`} historicPrices={historicPrices} setResolvedProfits={setResolvedProfits} resolvedProfits={resolvedProfits} currentPrice={currentPrice} transaction={transaction} />)}

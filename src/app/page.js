@@ -13,6 +13,7 @@ import UIMessages from './assets/uimessages';
 import GoogleAnalytics from './analytics';
 import ExplanationSection from './components/web/explanationSection';
 import Navbar from './navbar';
+import { faQuestionCircle } from '@fortawesome/free-regular-svg-icons';
 
 export default function Home() {
   const [wallet, setWallet] = useState('');
@@ -25,6 +26,7 @@ export default function Home() {
   const [transactions, setTransactions] = useState()
   const [crypto, setCrypto] = useState()
   const [languageDetected, setLanguageDetected] = useState('');
+  const [isExplanationVisible, setIsExplanationVisible] = useState(false)
 
   const fetchPrice = async (crypto) => {
     try {
@@ -158,7 +160,7 @@ export default function Home() {
   return (
     <div className='d-flex flex-column w-100'>
       <GoogleAnalytics />
-      <Navbar/>
+      <Navbar />
       <div className="d-flex bg-dark text-white justify-content-center align-items-center mainContainer w-100" data-bs-theme="dark">
         <div className="d-flex flex-column align-items-center justify-content-center text-center h-100">
           {!transactions && <Search
@@ -180,18 +182,25 @@ export default function Home() {
                   <AdaCoin className="ada-logo mx-1" width={23.25} height={23.25}></AdaCoin>
                 </div>}
               </div>
+
               {price && <h4>${price.toLocaleString() || "fetching price..."}</h4>}
-              <h4 className='ms-1'>{UIMessages[languageDetected].rightNow}</h4>
+
+
             </div>
-            <div className='d-flex mb-2'>
-              {totalProfits && <h1 className={`${totalProfits > 0 ? "text-success" : "text-danger"}`}>{totalProfits > 0 ? "+" : ""}{totalProfits.toLocaleString()} USD</h1>}
+            <h4 className='ms-2'>{UIMessages[languageDetected].rightNow}</h4>
+            <div className='d-flex mb-2 align-items-center'>
+              {totalProfits && <h1 className={`${totalProfits > 0 ? "text-success" : "text-danger"}`}>{UIMessages[languageDetected].returns} {totalProfits > 0 ? "+" : ""}{totalProfits.toLocaleString()} USD
+
+              </h1>}
+              <span style={{ cursor: "pointer" }} onClick={e => setIsExplanationVisible(prev => !prev)}>
+                <FontAwesomeIcon className='text-muted ms-3' style={{ fontSize: 20 }} icon={faQuestionCircle} />
+              </span>
             </div>
-            <p style={{ fontSize: 12 }} className='mb-0 text-muted px-2'>{UIMessages[languageDetected].explanation}</p>
+            {isExplanationVisible && <div style={{ fontSize: 12, textAlign: "justify", position: "fixed", top: 10 }} className='alert alert-primary'>{UIMessages[languageDetected].explanation}</div>}
             <div className="d-flex justify-content-between py-2 flex-column">
               {transactions && transactions.length === 0 && <Spinner />}
             </div>
             {transactions && <span className='text-white mb-2 fw-bold text-white'>{UIMessages[languageDetected].gainsPerTx}</span>}
-            {transactions && <small style={{ fontSize: 11 }} className='text-muted fw-normal mb-2'> ({UIMessages[languageDetected].last} {transactions.length} {UIMessages[languageDetected].lasEnd})</small>}
 
             {transactions && <div className='makeitscrollable_and_full_window_height mt-2'>
               {transactions.length > 0 && <Analysis languageDetected={languageDetected} wallet={wallet} crypto={crypto} setResolvedProfits={setResolvedProfits} transactions={transactions} resolvedProfits={resolvedProfits} currentPrice={price} walletInfo={walletInfo} />}
@@ -204,7 +213,7 @@ export default function Home() {
 
       </div>
       {!transactions && <ExplanationSection languageDetected={languageDetected} />
-}
+      }
       <Info></Info>
 
     </div>

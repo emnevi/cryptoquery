@@ -16,7 +16,7 @@ const TransactionCard = ({ transaction, currentPrice, setResolvedProfits, resolv
 
     useEffect(() => {
 
-        if(crypto === "ADA"){
+        if (crypto === "ADA") {
             const currentTransactionHitoricPrice = historicPrices.filter(history => DateTime.fromSeconds(history.x).toISODate() === DateTime.fromSeconds(transaction.block_time).toISODate())[0]
             if (currentTransactionHitoricPrice) {
                 setTxPrice(Number(currentTransactionHitoricPrice.y))
@@ -27,11 +27,11 @@ const TransactionCard = ({ transaction, currentPrice, setResolvedProfits, resolv
                 setTxPrice(Number(currentTransactionHitoricPrice.y))
             }
         }
-    
+
     }), [historicPrices, transaction]
 
     const getCoinBalance = (transaction, crypto) => {
-        if(crypto === "ADA"){
+        if (crypto === "ADA") {
             return Number(transaction.value)
         } else {
             return transaction.recipients.map(rec => Number(rec.amount)).reduce((value, acc) => acc + value, 0)
@@ -69,9 +69,9 @@ const TransactionCard = ({ transaction, currentPrice, setResolvedProfits, resolv
                 setNotification(false)
             }, 1000);
         }}
-            className={`w-100 d-flex align-items-center border ${txCalculations.profits > 0 ? "border-success text-success" : "border-danger text-danger"} mb-3 shadow `}
+            className={`w-50 d-flex align-items-center border ${txCalculations.profits > 0 ? "border-success text-success" : "border-danger text-danger"} mb-3 shadow `}
             ref={cardRef}
-            style={{ borderRadius: 8 }}
+            style={{ borderRadius: 8, borderWidth: 3 }}
         >
 
             {!notification && <div className="d-flex justify-content-between align-items-center w-100 p-2">
@@ -81,8 +81,8 @@ const TransactionCard = ({ transaction, currentPrice, setResolvedProfits, resolv
                     </div>
                     <div className="text-muted d-flex align-items-center">
                         <div className="d-flex">
-                            {crypto !== "ADA" &&<small className="me-2">{DateTime.fromSeconds(transaction.timestamp).toLocaleString(DateTime.DATETIME_SHORT)}</small>}
-                            {crypto == "ADA" &&<small className="me-2">{DateTime.fromSeconds(transaction.block_time).toLocaleString(DateTime.DATETIME_SHORT)}</small>}
+                            {crypto !== "ADA" && <small className="me-2">{DateTime.fromSeconds(transaction.timestamp).toLocaleString(DateTime.DATETIME_SHORT)}</small>}
+                            {crypto == "ADA" && <small className="me-2">{DateTime.fromSeconds(transaction.block_time).toLocaleString(DateTime.DATETIME_SHORT)}</small>}
                         </div>
                     </div>
                 </>}

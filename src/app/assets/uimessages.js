@@ -3,7 +3,7 @@ const UIMessages = {
         title: "Consulta cuánto ha crecido tu cripto",
         subtitle: "Ingresa la dirección de tu billetera y calcularemos tus ganancias.",
         inputPlaceholer: "Ingresa tu billetera cripto...",
-        addresses: "Billeteras soportadas", 
+        addresses: "Billeteras soportadas",
         actionButton: "Vamos!",
         explanation: "Hemos analizado todas las transacciones entrantes a tu billetera y hemos comparado el valor en el momento de cada transacción con el precio actual de mercado.",
         rightNow: "Ahora mismo",
@@ -16,8 +16,8 @@ const UIMessages = {
         card2Title: "Cálculo de retorno en Tiempo Real",
         card2Text: "Calculamos el retorno de tu inversión hasta el día de hoy, dándote una visión instantánea del valor actual de tu cripto basado en transacciones pasadas.",
         card3Title: "Solo Carteras Nativas",
-        card3Text: "Ten en cuenta que solo aceptamos direcciones de carteras nativas de BTC, ETH y ADA—no carteras de intercambios. Asegúrate de usar una cartera directamente de la cadena de bloques para obtener resultados precisos"
-
+        card3Text: "Ten en cuenta que solo aceptamos direcciones de carteras nativas de BTC, ETH y ADA—no carteras de intercambios. Asegúrate de usar una cartera directamente de la cadena de bloques para obtener resultados precisos",
+        returns: "Retornos"
     },
     English: {
         title: "Check how much your crypto has grown",
@@ -36,7 +36,8 @@ const UIMessages = {
         card2Title: "Real-Time returns Calculation",
         card2Text: "We calculate the return on your investment up to the present day, giving you an instant snapshot of your crypto's current value based on past transactions.",
         card3Title: "Native Wallets Only",
-        card3Text: "Please note, we only accept native BTC, ETH, and ADA wallet addresses—not exchange wallets. Make sure to use a wallet directly from the blockchain for accurate results."
+        card3Text: "Please note, we only accept native BTC, ETH, and ADA wallet addresses—not exchange wallets. Make sure to use a wallet directly from the blockchain for accurate results.",
+        returns: "Returns"
     }
 }
 
