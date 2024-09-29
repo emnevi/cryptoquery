@@ -201,8 +201,8 @@ export default function Home() {
         </div>
 
       </div>
-      <ExplanationSection languageDetected={languageDetected} />
-
+      {!transactions && <ExplanationSection languageDetected={languageDetected} />
+}
       <Info></Info>
 
     </div>

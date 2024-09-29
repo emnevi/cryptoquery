@@ -14,6 +14,18 @@ const Search = ({ handleSubmit, setWallet, error, wallet, loading, languageDetec
             <h1 className="text-light mb-1 fw-bold" style={{ paddingBottom: 8 }}>{UIMessages[languageDetected].title}</h1>
             <span className="text-muted mb-3" style={{ paddingBottom: 30 }}>{UIMessages[languageDetected].subtitle}</span>
             <form onSubmit={handleSubmit} className="mb-4">
+ 
+
+                <div className="form-floating mb-3">
+                    <input
+                        className="form-control border-primary"
+                        value={wallet}
+                        onChange={(e) => setWallet(e.target.value)}
+                        id="floatingInput"
+                        placeholder={UIMessages[languageDetected].inputPlaceholer}
+                    />
+                    <label for="floatingInput">{UIMessages[languageDetected].inputPlaceholer}</label>
+                </div>
                 <div className="d-flex justify-content-start align-items-center mb-3">
                     <FontAwesomeIcon className="mx-1" size="xl" icon={faBitcoin} />
                     <FontAwesomeIcon className="mx-1" size="xl" icon={faEthereum} />
@@ -21,13 +33,6 @@ const Search = ({ handleSubmit, setWallet, error, wallet, loading, languageDetec
                         <AdaIcon className="ada-logo mx-1" width={23.25} height={23.25}></AdaIcon>
                     </div>
                 </div>
-                <input
-                    type="text"
-                    value={wallet}
-                    onChange={(e) => setWallet(e.target.value)}
-                    placeholder={UIMessages[languageDetected].inputPlaceholer}
-                    className="form-control p-2 border-primary"
-                />
 
                 {error && <p className="text-danger">{error}</p>}
                 <div className="d-flex w-100 justify-content-center">
