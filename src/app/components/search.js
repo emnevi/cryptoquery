@@ -20,7 +20,7 @@ const Search = ({ handleSubmit, setWallet, error, wallet, loading, languageDetec
             <form onSubmit={handleSubmit} className="mb-4 w-100">
                 <div className="form-floating mb-3">
                     <input
-                        className="form-control border-primary"
+                        className="form-control border-primary input-effect"
                         value={wallet}
                         onChange={(e) => setWallet(e.target.value)}
                         id="floatingInput"

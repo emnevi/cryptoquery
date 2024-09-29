@@ -215,7 +215,6 @@ export default function Home() {
       {!transactions && <ExplanationSection languageDetected={languageDetected} />
       }
       <Info></Info>
-
     </div>
   );
 }
