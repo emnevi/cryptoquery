@@ -3,6 +3,19 @@ import { NextResponse } from 'next/server';
 
 const KUCOIN_API_URL = 'https://api.kucoin.com/api/v1/market/allTickers';
 
+const CRYPTO_LIST = [
+  "BTC-USDT",
+  "ETH-USDT",
+  "XRP-USDT",
+  "BNB-USDT",
+  "SOL-USDT",
+  "PEPE-USDT",
+  "DOGE-USDT",
+  "SUI-USDT",
+  "SHIB-USDT",
+  "ONDO-USDT"
+]
+
 export async function GET() {
   try {
     // Fetch all tickers from KuCoin API
@@ -14,8 +27,10 @@ export async function GET() {
     }
 
     // Get all tickers, sort them by volume in descending order, and take the top 10
+    console.log("data.data.ticker", data.data.ticker)
     const tickers = data.data.ticker
-      .sort((a, b) => parseFloat(b.vol) - parseFloat(a.vol))
+      .filter(tik => CRYPTO_LIST.includes(tik.symbol))
+      .sort((a, b) => parseFloat(a.vol) - parseFloat(b.vol))
       .slice(0, 10);
 
     // Extract the symbols for the top 10 cryptos
