@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&display=swap');
+
 :root {
   --background: #ffffff;
   --foreground: #222031;
@@ -15,19 +17,13 @@ html, body {
   height: 100%;
   margin: 0;
   padding: 0;
+  font-family: "Exo 2", sans-serif !important;
+  font-optical-sizing: auto;
 }
 
 body {
   display: flex;
   flex-direction: column;
-}
-
-.border-green {
-  border-color: var(--success) !important;
-}
-
-.text-green {
-  color: var(--success) !important;
 }
 
 .makeitscrollable_and_full_window_height {
@@ -39,10 +35,11 @@ body {
 
 .mainContainer{
   width: 100vw;
+  height: 90vh;
 }
 
 .infoBar{
-  position: absolute;
+  position: fixed;
   bottom: 5px;
   right: 5px
 
@@ -50,4 +47,8 @@ body {
 
 .ada-logo{
   color: white !important;
+}
+
+.explanationCard{
+  height: 25vh;
 }

@@ -11,8 +11,8 @@ const Search = ({ handleSubmit, setWallet, error, wallet, loading, languageDetec
 
     return (
         <div className="d-flex flex-column px-3">
-            <h1 className="text-light mb-1 fw-bold" style={{ paddingBottom: 30 }}>{UIMessages[languageDetected].title}</h1>
-            <span className="text-muted mb-3 fw-bold" style={{ paddingBottom: 30 }}>{UIMessages[languageDetected].subtitle}</span>
+            <h1 className="text-light mb-1 fw-bold" style={{ paddingBottom: 8 }}>{UIMessages[languageDetected].title}</h1>
+            <span className="text-muted mb-3" style={{ paddingBottom: 30 }}>{UIMessages[languageDetected].subtitle}</span>
             <form onSubmit={handleSubmit} className="mb-4">
                 <div className="d-flex justify-content-start align-items-center mb-3">
                     <FontAwesomeIcon className="mx-1" size="xl" icon={faBitcoin} />

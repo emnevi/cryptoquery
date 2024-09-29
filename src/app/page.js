@@ -11,6 +11,7 @@ import Info from './info';
 import AdaCoin from "./assets/cardano-ada-logo.svg"
 import UIMessages from './assets/uimessages';
 import GoogleAnalytics from './analytics';
+import ExplanationSection from './components/web/explanationSection';
 
 export default function Home() {
   const [wallet, setWallet] = useState('');
@@ -154,10 +155,9 @@ export default function Home() {
   if (!languageDetected) return
 
   return (
-    <>
+    <div className='d-flex flex-column w-100'>
       <GoogleAnalytics />
-      <div className="d-flex vh-100 bg-dark text-white justify-content-center align-items-center mainContainer" data-bs-theme="dark">
-
+      <div className="d-flex bg-dark text-white justify-content-center align-items-center mainContainer w-100" data-bs-theme="dark">
         <div className="d-flex flex-column align-items-center justify-content-center text-center h-100">
           {!transactions && <Search
             setWallet={setWallet}
@@ -199,7 +199,12 @@ export default function Home() {
           </>}
 
         </div>
-        <Info></Info>
-      </div></>
+
+      </div>
+      <ExplanationSection languageDetected={languageDetected} />
+
+      <Info></Info>
+
+    </div>
   );
 }
