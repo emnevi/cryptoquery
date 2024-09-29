@@ -162,7 +162,7 @@ export default function Home() {
       <GoogleAnalytics />
       <Navbar />
       <div className="d-flex bg-dark text-white justify-content-center align-items-center mainContainer w-100" data-bs-theme="dark">
-        <div className="d-flex flex-column align-items-center justify-content-center text-center h-100">
+        <div className="d-flex flex-column align-items-center mt-4 text-center h-100">
           {!transactions && <Search
             setWallet={setWallet}
             handleSubmit={e => handleSubmit(e, crypto)}
