@@ -10,12 +10,14 @@ const Search = ({ handleSubmit, setWallet, error, wallet, loading, languageDetec
     if (!languageDetected) return
 
     return (
-        <div className="d-flex flex-column px-3">
-            <h1 className="text-light mb-1 fw-bold" style={{ paddingBottom: 8 }}>{UIMessages[languageDetected].title}</h1>
-            <span className="text-muted mb-3" style={{ paddingBottom: 30 }}>{UIMessages[languageDetected].subtitle}</span>
-            <form onSubmit={handleSubmit} className="mb-4">
- 
+        <div className="d-flex flex-column px-3 align-items-center">
+            <img src="./images/Spanish.png" style={{width: "70%"}}></img>
 
+            <h1 className="text-light mb-1 fw-bold mt-4" style={{ paddingBottom: 8 }}>{UIMessages[languageDetected].title}</h1>
+            <span className="text-muted mb-3" style={{ paddingBottom: 30 }}>{UIMessages[languageDetected].subtitle}</span>
+
+
+            <form onSubmit={handleSubmit} className="mb-4 w-100">
                 <div className="form-floating mb-3">
                     <input
                         className="form-control border-primary"
