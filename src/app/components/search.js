@@ -11,7 +11,7 @@ const Search = ({ handleSubmit, setWallet, error, wallet, loading, languageDetec
 
     return (
         <div className="d-flex flex-column px-3 align-items-center">
-            <img src="./images/Spanish.png" style={{width: "70%"}}></img>
+            <img src={`/images/${languageDetected}.png`} style={{width: "70%"}}></img>
 
             <h1 className="text-light mb-1 fw-bold mt-4" style={{ paddingBottom: 8 }}>{UIMessages[languageDetected].title}</h1>
             <span className="text-muted mb-3" style={{ paddingBottom: 30 }}>{UIMessages[languageDetected].subtitle}</span>
