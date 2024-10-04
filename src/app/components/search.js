@@ -3,50 +3,54 @@ import { faBitcoin, faEthereum } from "@fortawesome/free-brands-svg-icons"
 import AdaIcon from "../assets/cardano-ada-logo.svg"
 import Spinner from "./useful/spinner"
 import UIMessages from "../assets/uimessages"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { ReloadIcon } from "@radix-ui/react-icons"
 
 
 const Search = ({ handleSubmit, setWallet, error, wallet, loading, languageDetected }) => {
 
     if (!languageDetected) return
 
+
+
     return (
-        <div className="d-flex flex-column px-3 align-items-center">
-            <img src={`/images/${languageDetected}.png`} style={{width: "70%"}}></img>
+        <section class="bg-dark text-white py-20">
+            <div class="container mx-auto px-6 text-center">
+                <h1 class="text-5xl font-bold">{UIMessages[languageDetected].title}</h1>
+                <p class="mt-4 text-xl">{UIMessages[languageDetected].subtitle}</p>
 
-            <h1 className="text-light mb-1 fw-bold mt-4" style={{ paddingBottom: 8 }}>{UIMessages[languageDetected].title}</h1>
-            <span className="text-muted mb-3" style={{ paddingBottom: 30 }}>{UIMessages[languageDetected].subtitle}</span>
+                <form onSubmit={handleSubmit} className="mb-4 mt-4 container mx-auto text-center">
+                    <div className="mb-3">
+                        <div className="flex flex-col md:flex-row justify-center w-full max-w-2xl mx-auto space-y-4 md:space-y-0 md:space-x-2">
+                            <Input
+                                className="w-full text-white border-primary"
+                                value={wallet}
+                                onChange={(e) => setWallet(e.target.value)}
+                                id="floatingInput"
+                                placeholder={UIMessages[languageDetected].inputPlaceholer}
+                            />
+                            <Button
+                                className="w-full md:w-auto justify-self-end"
+                                disabled={loading}
+                            >
+                                {!loading && UIMessages[languageDetected].actionButton}
+                                {loading && <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />}
+                            </Button>
+                        </div>
+                    </div>
 
-
-            <form onSubmit={handleSubmit} className="mb-4 w-100">
-                <div className="form-floating mb-3">
-                    <input
-                        className="form-control border-primary input-effect"
-                        value={wallet}
-                        onChange={(e) => setWallet(e.target.value)}
-                        id="floatingInput"
-                        placeholder={UIMessages[languageDetected].inputPlaceholer}
-                    />
-                    <label for="floatingInput">{UIMessages[languageDetected].inputPlaceholer}</label>
-                </div>
-                <div className="d-flex justify-content-start align-items-center mb-3">
-                    <FontAwesomeIcon className="mx-1" size="xl" icon={faBitcoin} />
-                    <FontAwesomeIcon className="mx-1" size="xl" icon={faEthereum} />
-                    <div>
+                    <div className="flex flex-col md:flex-row justify-center w-full max-w-2xl mx-auto space-y-4 md:space-y-0 md:space-x-2">
+                        <FontAwesomeIcon className="mx-1" size="xl" icon={faBitcoin} />
+                        <FontAwesomeIcon className="mx-1" size="xl" icon={faEthereum} />
                         <AdaIcon className="ada-logo mx-1" width={23.25} height={23.25}></AdaIcon>
                     </div>
-                </div>
 
-                {error && <p className="text-danger">{error}</p>}
-                <div className="d-flex w-100 justify-content-center">
-                    <button style={{ height: 38, maxHeight: 38, minHeight: 38, marginTop: 50, borderRadius: 20 }} type="submit" className="btn text-white btn-primary w-50 d-flex align-items-center justify-content-center" disabled={loading}>
-                        {!loading && UIMessages[languageDetected].actionButton}
-                        {loading && <Spinner height={25} color="text-white" />}
-                    </button>
-                </div>
-            </form>
+                    {error && <p className="text-danger">{error}</p>}
+                </form>
+            </div>
+        </section>
 
-
-        </div>
     )
 }
 

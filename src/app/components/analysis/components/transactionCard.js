@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef } from "react"
-import { useCopyToClipboard } from "@/app/hooks/useCOpyToClipboard"
+import { useCopyToClipboard } from "../../../hooks/useCOpyToClipboard"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faReceipt } from "@fortawesome/free-solid-svg-icons"
 import { DateTime } from "luxon"
