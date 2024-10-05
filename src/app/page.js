@@ -42,6 +42,7 @@ export default function Home() {
   const [transactions, setTransactions] = useState()
   const [crypto, setCrypto] = useState()
   const [languageDetected, setLanguageDetected] = useState('');
+  const [isInvalidAddress, setIsInvalidAddress] = useState(false)
   const [isExplanationVisible, setIsExplanationVisible] = useState(false)
 
   const fetchPrice = async (crypto) => {
@@ -136,7 +137,7 @@ export default function Home() {
     e.preventDefault();
 
     if (!validateAddress(wallet)) {
-      setError('Invalid wallet address');
+      setIsInvalidAddress(true);
       return;
     }
 
@@ -172,6 +173,16 @@ export default function Home() {
     setLoading(false)
   }, [resolvedProfits])
 
+  useEffect(() => {
+    if (!isInvalidAddress) return
+
+    const timer = setTimeout(() => {
+      setIsInvalidAddress(false)
+    }, 2000);
+
+    return () => clearTimeout(timer)
+  }, [isInvalidAddress])
+
   if (!languageDetected) return
 
   if (error) {
@@ -187,6 +198,7 @@ export default function Home() {
     )
   }
 
+
   return (
     <div className='d-flex flex-column w-100'>
       <GoogleAnalytics />
@@ -201,6 +213,7 @@ export default function Home() {
           wallet={wallet}
           loading={loading}
           languageDetected={languageDetected}
+          isInvalidAddress={isInvalidAddress}
         />}
 
 
