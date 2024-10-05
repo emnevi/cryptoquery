@@ -28,6 +28,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 
 export default function Home() {
   const [wallet, setWallet] = useState('');
@@ -49,7 +51,6 @@ export default function Home() {
 
       if (res.ok) {
         setPrice(data.price);
-        setError(data.error || 'Failed to fetch the price');
       }
     } catch (err) {
       setError('Error fetching price');
@@ -115,25 +116,21 @@ export default function Home() {
         setTransactions(data)
       } else {
         const response = await fetch(`/api/getWalletTransactions?address=${address}&crypto=${crypto}`);
+        if (!response.ok) {
+          setError("Error fetching wallet")
+        }
         const data = await response.json();
         setWalletInfo(data)
         setTransactions(data)
       }
-
-
     } catch (error) {
-      console.error('Error fetching transactions:', error);
+      console.log('Error fetching transactions:', error);
+
     } finally {
       setLoading(false)
     }
   };
 
-/* 
-  useEffect(() => {
-    if (transactions && transactions.length > 0 && totalProfits) {
-      setLoading(false)
-    }
-  }, [transactions, totalProfits]) */
 
   const handleSubmit = async (e, crypto) => {
     e.preventDefault();
@@ -145,10 +142,9 @@ export default function Home() {
 
     try {
       fetchWalletTransactions(wallet);
-
     } catch (error) {
       console.error('Error fetching wallet info:', error);
-    } finally {
+      setError("Failed to fetch wallet transactions")
     }
   };
 
@@ -178,6 +174,19 @@ export default function Home() {
 
   if (!languageDetected) return
 
+  if (error) {
+    return (
+      <div className="vh-100 d-flex align-items-center justify-content-center">
+        <Alert className="bg-dark border-danger text-danger mt-4" style={{ maxWidth: 500 }}>
+          <AlertDescription className="flex justify-between items-center">
+            {error}
+            <Button className="ml-auto bg-secondary" onClick={e => window.location.reload()}>Go back</Button>
+          </AlertDescription>
+        </Alert>
+      </div>
+    )
+  }
+
   return (
     <div className='d-flex flex-column w-100'>
       <GoogleAnalytics />
@@ -196,7 +205,7 @@ export default function Home() {
 
 
         {loading && <Skeleton className="h-4 w-[250px]" />}
-        {transactions && !loading && <>
+        {transactions && !loading && !error && <>
 
 
           <Card className={`bg-dark text-white border-${totalProfits > 0 ? "success" : "danger"}`}>
