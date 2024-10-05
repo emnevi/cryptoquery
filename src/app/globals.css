@@ -24,7 +24,7 @@ body {
 }
 
 .makeitscrollable_and_full_window_height {
-  height: 90%;
+  height: 60vh;
   max-height: 100vh;
   overflow-y: auto;
   width: 100vw
@@ -112,8 +112,5 @@ body {
 @layer base {
   * {
     @apply border-border;
-  }
-  body {
-    @apply bg-background text-foreground;
   }
 }

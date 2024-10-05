@@ -14,6 +14,18 @@ import GoogleAnalytics from './analytics';
 import ExplanationSection from './components/web/explanationSection';
 import Navbar from './navbar';
 import { faQuestionCircle } from '@fortawesome/free-regular-svg-icons';
+import testTransactions from "../../data/walletSample.json"
+import { RocketIcon } from "@radix-ui/react-icons"
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
 
 export default function Home() {
   const [wallet, setWallet] = useState('');
@@ -163,6 +175,7 @@ export default function Home() {
       <Navbar />
 
       <div data-bs-theme="dark" className="d-flex flex-column align-items-center pt-4 text-center h-100 bg-dark mainContainer">
+
         {!transactions && <Search
           setWallet={setWallet}
           handleSubmit={e => handleSubmit(e, crypto)}
@@ -174,35 +187,38 @@ export default function Home() {
 
         {transactions && !loading && <>
 
-          <div className='d-flex mb-3 mt-3 pt-3'>
-            <div className='text-white me-2'>
-              {crypto === "BTC" && <FontAwesomeIcon className='text-white' size='xl' icon={faBitcoin} />}
-              {crypto === "ETH" && <FontAwesomeIcon className='text-white' size='xl' icon={faEthereum} />}
-              {crypto === "ADA" && <div>
-                <AdaCoin className="ada-logo mx-1" width={23.25} height={23.25}></AdaCoin>
-              </div>}
-            </div>
 
-            {price && <h4>${price.toLocaleString() || "fetching price..."}</h4>}
+          <Card className={`bg-dark text-white border-${totalProfits > 0 ? "success" : "danger"}`}>
+            <CardHeader>
+              <CardTitle>  {totalProfits && <h1 className={`${totalProfits > 0 ? "text-success" : "text-danger"}`}>{totalProfits > 0 ? "+" : ""}{totalProfits.toLocaleString()} USD
+              </h1>}
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="d-flex justify-content-center align-items-center mb-1">
+                <div className='text-white me-3'>
+                  {crypto === "BTC" && <FontAwesomeIcon className='text-white' size='xl' icon={faBitcoin} />}
+                  {crypto === "ETH" && <FontAwesomeIcon className='text-white' size='xl' icon={faEthereum} />}
+                  {crypto === "ADA" && <div>
+                    <AdaCoin className="ada-logo mx-1" width={23.25} height={23.25}></AdaCoin>
+                  </div>}
+
+                </div>
+                {price && <h4 className="mb-0">${price.toLocaleString() || "fetching price..."}</h4>}
+              </div>
+              <CardDescription>Right now!</CardDescription>
+            </CardContent>
+
+          </Card>
 
 
-          </div>
-          <h4 className='ms-2'>{UIMessages[languageDetected].rightNow}</h4>
-          <div className='d-flex mb-2 align-items-center'>
-            {totalProfits && <h1 className={`${totalProfits > 0 ? "text-success" : "text-danger"}`}>{UIMessages[languageDetected].returns} {totalProfits > 0 ? "+" : ""}{totalProfits.toLocaleString()} USD
+          <Alert className="bg-dark border-light text-light mt-4" style={{maxWidth: 500}}>
+            <AlertDescription>
+              {UIMessages[languageDetected].explanation}
+            </AlertDescription>
+          </Alert>
 
-            </h1>}
-            <span style={{ cursor: "pointer" }} onClick={e => setIsExplanationVisible(prev => !prev)}>
-              <FontAwesomeIcon className='text-muted ms-3' style={{ fontSize: 20 }} icon={faQuestionCircle} />
-            </span>
-          </div>
-          {isExplanationVisible && <div style={{ fontSize: 12, textAlign: "justify", position: "fixed", top: 10 }} className='alert alert-primary'>{UIMessages[languageDetected].explanation}</div>}
-          <div className="d-flex justify-content-between py-2 flex-column">
-            {transactions && transactions.length === 0 && <Spinner />}
-          </div>
-          {transactions && <span className='text-white mb-2 fw-bold text-white'>{UIMessages[languageDetected].gainsPerTx}</span>}
-
-          {transactions && <div className='makeitscrollable_and_full_window_height mt-2'>
+          {transactions && <div className='makeitscrollable_and_full_window_height mt-2 d-flex justify-content-center'>
             {transactions.length > 0 && <Analysis languageDetected={languageDetected} wallet={wallet} crypto={crypto} setResolvedProfits={setResolvedProfits} transactions={transactions} resolvedProfits={resolvedProfits} currentPrice={price} walletInfo={walletInfo} />}
             {transactions.length === 0 && <h5 className='text-danger'>{UIMessages[languageDetected].noTxFound}</h5>}
           </div>}

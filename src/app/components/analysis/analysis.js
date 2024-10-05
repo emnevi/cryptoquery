@@ -1,6 +1,16 @@
 import { useEffect, useState } from "react"
 import TransactionCard from "./components/transactionCard"
 import { DateTime } from "luxon"
+import {
+    Table,
+    TableBody,
+    TableCaption,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from "@/components/ui/table"
+
 
 const Analysis = ({ currentPrice, setResolvedProfits, resolvedProfits, transactions, crypto, wallet, languageDetected }) => {
 
@@ -63,11 +73,25 @@ const Analysis = ({ currentPrice, setResolvedProfits, resolvedProfits, transacti
     }, [txDates])
 
     return (
-        <div className="d-flex flex-column align-items-center" style={{ height: 500, maxHeight: 500}}>
-            {transactions.filter((transaction) =>
-                !transaction.senders.some(sender => sender.address === wallet)
-            ).toReversed().map((transaction, index) => <TransactionCard languageDetected={languageDetected} crypto={crypto} key={`index_${index}_${transaction.timestamp}`} historicPrices={historicPrices} setResolvedProfits={setResolvedProfits} resolvedProfits={resolvedProfits} currentPrice={currentPrice} transaction={transaction} />)}
-        </div>
+        <div className="d-flex flex-column justify-content-center align-items-center">
+            <Table style={{ width: 500 }}>
+                <TableCaption>Your last 50 inbound transactions</TableCaption>
+                <TableHeader style={{ width: 400 }}>
+                    <TableRow>
+                        <TableHead className="text-center">Gain / Loss</TableHead>
+                        <TableHead className="text-center">Tx date</TableHead>
+                    </TableRow>
+                </TableHeader>
+
+                <TableBody>
+                    {
+                        transactions.filter((transaction) =>
+                            !transaction.senders.some(sender => sender.address === wallet)
+                        ).toReversed().map((transaction, index) => <TransactionCard languageDetected={languageDetected} crypto={crypto} key={`index_${index}_${transaction.timestamp}`} historicPrices={historicPrices} setResolvedProfits={setResolvedProfits} resolvedProfits={resolvedProfits} currentPrice={currentPrice} transaction={transaction} />)
+                    }
+                </TableBody>
+            </Table>
+        </div >
     )
 }
 
