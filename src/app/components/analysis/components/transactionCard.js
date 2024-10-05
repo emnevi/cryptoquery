@@ -4,6 +4,8 @@ import { useState, useEffect, useRef } from "react"
 import { useCopyToClipboard } from "../../../hooks/useCOpyToClipboard"
 import { DateTime } from "luxon"
 import { TableCell, TableRow } from "@/components/ui/table"
+import { Skeleton } from "@/components/ui/skeleton"
+
 
 const TransactionCard = ({ transaction, currentPrice, setResolvedProfits, resolvedProfits, historicPrices, crypto, languageDetected }) => {
     const [txPrice, setTxPrice] = useState()
@@ -62,6 +64,10 @@ const TransactionCard = ({ transaction, currentPrice, setResolvedProfits, resolv
 
     const isSuccess = txCalculations.profits > 0
 
+    if (!txCalculations.profits) {
+        return <Skeleton className="h-4 w-[250px]" />
+    }
+
     return (
         <TableRow className=" border-secondary">
             <TableCell className="" >
@@ -73,38 +79,6 @@ const TransactionCard = ({ transaction, currentPrice, setResolvedProfits, resolv
                 {crypto == "ADA" && <small className="me-2">{DateTime.fromSeconds(transaction.block_time).toLocaleString(DateTime.DATETIME_SHORT)}</small>}
             </TableCell>
         </TableRow>
-
-        /*         <div onClick={() => {
-                    copyToClipboard(transaction.hash)
-                    setNotification(true)
-                    setTimeout(() => {
-                        setNotification(false)
-                    }, 1000);
-                }}
-                    className={`d-flex align-items-center border ${txCalculations.profits > 0 ? "border-success text-success" : "border-danger text-danger"} mb-3 shadow `}
-                    ref={cardRef}
-                    style={{ borderRadius: 8, borderWidth: 3, width: "50%", minWidth: 300, maxWidth: 600 }}
-                >
-        
-                    {!notification && <div className="d-flex justify-content-between align-items-center w-100 p-2">
-                        {!Number.isNaN(txCalculations.profits) && <>
-                            <div className={`bg-transparent ${txCalculations.profits > 0 ? "border-success" : "border-danger"} fw-bold`}>
-                                {txCalculations?.profits && <span className="mb-0">${txCalculations.profits.toLocaleString()}</span>}
-                            </div>
-                            <div className="text-muted d-flex align-items-center">
-                                <div className="d-flex">
-                                    {crypto !== "ADA" && <small className="me-2">{DateTime.fromSeconds(transaction.timestamp).toLocaleString(DateTime.DATETIME_SHORT)}</small>}
-                                    {crypto == "ADA" && <small className="me-2">{DateTime.fromSeconds(transaction.block_time).toLocaleString(DateTime.DATETIME_SHORT)}</small>}
-                                </div>
-                            </div>
-                        </>}
-                        {Number.isNaN(txCalculations.profits) && <span>Woops! We messed up this one</span>}
-                    </div>}
-        
-                    {notification && <div className="d-flex w-100 border border-warning text-warning p-1" role="alert">
-                        Copied Tx hash to clipboard!
-                    </div>}
-                </div> */
     )
 }
 

@@ -17,6 +17,8 @@ import { faQuestionCircle } from '@fortawesome/free-regular-svg-icons';
 import testTransactions from "../../data/walletSample.json"
 import { RocketIcon } from "@radix-ui/react-icons"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+import { Skeleton } from "@/components/ui/skeleton"
+
 
 import {
   Card,
@@ -126,6 +128,12 @@ export default function Home() {
     }
   };
 
+/* 
+  useEffect(() => {
+    if (transactions && transactions.length > 0 && totalProfits) {
+      setLoading(false)
+    }
+  }, [transactions, totalProfits]) */
 
   const handleSubmit = async (e, crypto) => {
     e.preventDefault();
@@ -165,6 +173,7 @@ export default function Home() {
     const totalProfits = resolvedProfits.filter(value => value && !Number.isNaN(value)).reduce((a, b) => a + b, 0)
 
     setTotalProfits(totalProfits)
+    setLoading(false)
   }, [resolvedProfits])
 
   if (!languageDetected) return
@@ -185,6 +194,8 @@ export default function Home() {
           languageDetected={languageDetected}
         />}
 
+
+        {loading && <Skeleton className="h-4 w-[250px]" />}
         {transactions && !loading && <>
 
 
@@ -212,7 +223,7 @@ export default function Home() {
           </Card>
 
 
-          <Alert className="bg-dark border-light text-light mt-4" style={{maxWidth: 500}}>
+          <Alert className="bg-dark border-light text-light mt-4" style={{ maxWidth: 500 }}>
             <AlertDescription>
               {UIMessages[languageDetected].explanation}
             </AlertDescription>
