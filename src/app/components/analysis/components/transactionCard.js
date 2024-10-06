@@ -69,7 +69,7 @@ const TransactionCard = ({ transaction, currentPrice, setResolvedProfits, resolv
     }
 
     return (
-        <TableRow className=" border-secondary">
+        <TableRow className="border-secondary">
             <TableCell className="" >
                 {!Number.isNaN(txCalculations.profits) && txCalculations?.profits && <span className={`mb-0 fw-bold ${isSuccess ? "text-success" : "text-danger"}`}>${txCalculations.profits.toLocaleString()}</span>}
                 {Number.isNaN(txCalculations.profits) && <span>Woops! We messed this one up</span>}

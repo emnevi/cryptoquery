@@ -18,7 +18,10 @@ const UIMessages = {
         card3Title: "Solo Carteras Nativas",
         card3Text: "Ten en cuenta que solo aceptamos direcciones de carteras nativas de BTC, ETH y ADA—no carteras de intercambios. Asegúrate de usar una cartera directamente de la cadena de bloques para obtener resultados precisos",
         returns: "Retornos",
-        invalidAddress: "Inválida"
+        invalidAddress: "Inválida",
+        gainLossHead: "Ganancia / Pérdida",
+        txDate: "Fecha de Tx",
+        last50Tx: "Últimas 50 transacciones"
     },
     English: {
         title: "Check how much your crypto has grown",
@@ -39,7 +42,10 @@ const UIMessages = {
         card3Title: "Native Wallets Only",
         card3Text: "Please note, we only accept native BTC, ETH, and ADA wallet addresses—not exchange wallets. Make sure to use a wallet directly from the blockchain for accurate results.",
         returns: "Returns",
-        invalidAddress: "Invalid"
+        invalidAddress: "Invalid",
+        gainLossHead: "Gain / Loss",
+        txDate: "Tx date",
+        last50Tx: "Last 50 transactions"
     }
 }
 

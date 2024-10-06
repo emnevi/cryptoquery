@@ -24,15 +24,14 @@ body {
 }
 
 .makeitscrollable_and_full_window_height {
-  height: 60vh;
+  height: 53vh;
   max-height: 100vh;
   overflow-y: auto;
   width: 100vw
 }
 
 .mainContainer {
-
-  height: 100vh;
+  height: 45vh;
 }
 
 .infoBar {

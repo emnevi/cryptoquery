@@ -10,6 +10,7 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
+import UIMessages from "../../assets/uimessages"
 
 
 const Analysis = ({ currentPrice, setResolvedProfits, resolvedProfits, transactions, crypto, wallet, languageDetected }) => {
@@ -74,12 +75,12 @@ const Analysis = ({ currentPrice, setResolvedProfits, resolvedProfits, transacti
 
     return (
         <div className="d-flex flex-column justify-content-center align-items-center">
-            <Table style={{ width: 500 }}>
-                <TableCaption>Your last 50 inbound transactions</TableCaption>
-                <TableHeader style={{ width: 400 }}>
+            <Table style={{minWidth: 250}}>
+                <TableCaption className="text-center">{UIMessages[languageDetected].last50Tx}</TableCaption>
+                <TableHeader>
                     <TableRow>
-                        <TableHead className="text-center">Gain / Loss</TableHead>
-                        <TableHead className="text-center">Tx date</TableHead>
+                        <TableHead className="text-center">{UIMessages[languageDetected].gainLossHead}</TableHead>
+                        <TableHead className="text-center">{UIMessages[languageDetected].txDate}</TableHead>
                     </TableRow>
                 </TableHeader>
 

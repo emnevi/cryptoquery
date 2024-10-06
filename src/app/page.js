@@ -13,9 +13,6 @@ import UIMessages from './assets/uimessages';
 import GoogleAnalytics from './analytics';
 import ExplanationSection from './components/web/explanationSection';
 import Navbar from './navbar';
-import { faQuestionCircle } from '@fortawesome/free-regular-svg-icons';
-import testTransactions from "../../data/walletSample.json"
-import { RocketIcon } from "@radix-ui/react-icons"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Skeleton } from "@/components/ui/skeleton"
 
@@ -29,7 +26,6 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import { Button } from '@/components/ui/button';
-import Link from 'next/link';
 
 export default function Home() {
   const [wallet, setWallet] = useState('');
@@ -43,7 +39,6 @@ export default function Home() {
   const [crypto, setCrypto] = useState()
   const [languageDetected, setLanguageDetected] = useState('');
   const [isInvalidAddress, setIsInvalidAddress] = useState(false)
-  const [isExplanationVisible, setIsExplanationVisible] = useState(false)
 
   const fetchPrice = async (crypto) => {
     try {
@@ -221,7 +216,7 @@ export default function Home() {
         {transactions && !loading && !error && <>
 
 
-          <Card className={`bg-dark text-white border-${totalProfits > 0 ? "success" : "danger"}`}>
+          <Card className={`bg-dark mx-3 text-white border-${totalProfits > 0 ? "success" : "danger"}`}>
             <CardHeader>
               <CardTitle>  {totalProfits && <h1 className={`${totalProfits > 0 ? "text-success" : "text-danger"}`}>{totalProfits > 0 ? "+" : ""}{totalProfits.toLocaleString()} USD
               </h1>}
@@ -239,7 +234,7 @@ export default function Home() {
                 </div>
                 {price && <h4 className="mb-0">${price.toLocaleString() || "fetching price..."}</h4>}
               </div>
-              <CardDescription>Right now!</CardDescription>
+              <CardDescription>{UIMessages[languageDetected].rightNow}</CardDescription>
             </CardContent>
 
           </Card>
